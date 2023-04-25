@@ -19,7 +19,7 @@ knownCoef = {};
 
 RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
-Rtuple = {12.90884204, 0.5739285998}
+Rtuple = {11, 5}
 
 maxPower = 4;
 
