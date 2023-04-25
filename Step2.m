@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (* Load files. *)
-<<Lfunctions3.15a.m;
+<<Lfunctions.m;
 
 (* Parameters to initiate before calling
 fileNameBase="Runs/08/TestVer2.92/SL3_NL" <> ThisFileName ;
@@ -139,7 +139,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
 	,
 		startValues = {};
 	];
-    << eu3.15aZoomOne.m;
+    << ZoomOne.m;
     PrependTo[answer,Rinit];
     If[success,
         saveCandidate[fileNameBase <> "Success",answer];
@@ -210,7 +210,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
 	,
 		startValues = {};
 	];
-    << eu3.15aZoomOne.m;
+    << ZoomOne.m;
     PrependTo[answer,Rinit];
     If[success,
         saveCandidate[fileNameBase <> "Success",answer];

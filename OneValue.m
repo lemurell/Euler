@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-<< Lfunctions3.15a.m;
+<< Lfunctions.m;
 Clear[result];
 
 (* Parameters to initiate before calling *)
