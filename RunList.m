@@ -1,6 +1,6 @@
 (* ::Package:: *)
 
-<< Lfunctions3.15a.m;
+<< Lfunctions.m;
 Clear[result];
 
 (* Parameters to initiate before calling *)
@@ -58,7 +58,7 @@ Print["Parity: ", parity];
 Print["OMEGA: ", OMEGA];
 	];
 
-    << eu3.15aZoomOneNew.m;
+    << ZoomOne.m;
 
     PrependTo[answer,Rinit];
     PrependTo[answer,Ldata];

@@ -1,7 +1,7 @@
 (* ::Package:: *)
 
 (* Load files. *)
-<< Lfunctions3.15a.m;
+<< Lfunctions.m;
 
 (* Parameters to initiate before calling 
  fileName
