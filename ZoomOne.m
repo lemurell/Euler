@@ -60,7 +60,6 @@ llist = getLlist[Ltype, Rinit, parity];
 	startValuePrec = -Log[10, Max[RstepList]];
     
     success = True;
-	startNN = initNN;
 	AlreadyExtra = False;
 
     For[zoomloop=1,zoomloop<=ZoomSteps,zoomloop++,

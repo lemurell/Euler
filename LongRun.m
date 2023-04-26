@@ -22,7 +22,7 @@ knownCoef = {};
 sideLengths = getSideLengths[Ltype, 1];
 RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
-truncationList = {7, 10, 12, 14, 16, 18};	
+truncationList = {5, 7, 10, 12, 14, 16, 18};	
 maxPower = 4;
 
 For[Rleft=1,Rleft<=Length[runList],Rleft++,	
@@ -32,7 +32,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
-	fileNameBase="Runs/HoloxMaass/NewHoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
+	fileNameBase="Runs/TestNewVersion";
 
 	<< Total.m
 ];

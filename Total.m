@@ -61,7 +61,7 @@ v=2;
 nrOfExtraEquations = 8;
 Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
 NN = Nlist[[TRUNCDIGITS]];
-initNN = Nlist[[truncationList]];
+initNNList = Nlist[[truncationList]];
 {plist, highplist, nonplist, knownlist}=getUnknowns[Ldata, NN, maxPower, knownCoef];
 nrOfUnknowns= (2 - Abs[realOrImaginary]) Length[Union[plist, highplist]];
 nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
@@ -73,7 +73,7 @@ MaxSolutions = 20;
 startValuePrec = 0;
 
 incr=2*Pi*v/Log[10]/DIGITS;  (* Not good if v is large *)
-M = 10*Sqrt[Log[10]*DIGITS];
+M = 5*Sqrt[Log[10]*DIGITS];
 Print[N[incr]," M=",N[M]];
 
 expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
