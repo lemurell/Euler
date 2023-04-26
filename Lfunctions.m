@@ -1166,10 +1166,10 @@ getMultipleStartValues[startValues_, nrOfRuns_, nrOfUnknowns_, realOrImaginary_:
 ]
 
 (* Returns a list of the number of coefficients to use to have a truncation error at most 10^k where k takes all values from minTruncation to maxTruncation *) 
-getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,maxTruncation_:20,minTruncation_:1, maxNN_:50]:=Module[{expz,  incr, M, s, n, k, matrixrows, NN,  error, prec, param, truncation, Nlist},
+getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,maxTruncation_:20,minTruncation_:1, maxNN_:70]:=Module[{expz,  incr, M, s, n, k, matrixrows, NN,  error, prec, param, truncation, Nlist},
 	param={{0,0,0},{0,1/2,0}};
     incr=2*Pi*v/Log[10]/DIGITS;           
-    M=5Sqrt[Log[10]*DIGITS];
+    M=5 Sqrt[Log[10]*DIGITS];
 	expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,maxNN},{k,-M,M,incr}];
 	s=1/2 + I;
 	matrixrows = computeEquation[OMEGA,klist,llist,{},{},param,v,maxNN,incr, M,expz,s];

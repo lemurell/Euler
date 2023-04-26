@@ -20,6 +20,7 @@ knownCoef = {};
 RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
 Rtuple = {11, 5}
+truncationList = {7, 10, 12, 14, 16, 18};
 
 maxPower = 4;
 
@@ -60,6 +61,7 @@ v=2;
 nrOfExtraEquations = 8;
 Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
 NN = Nlist[[TRUNCDIGITS]];
+initNN = Nlist[[truncationList]];
 {plist, highplist, nonplist, knownlist}=getUnknowns[Ldata, NN, maxPower, knownCoef];
 nrOfUnknowns= (2 - Abs[realOrImaginary]) Length[Union[plist, highplist]];
 nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
@@ -143,8 +145,6 @@ For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
 DeleteFile[fileNameBase <> "StateData.m"];
 
 TimeStep1 = (TimeUsed[]-st)/60;
-Save[fileNameBase <> "Time.txt",TimeStep1];
-
-
+Save[fileNameBase <> "Time.txt", TimeStep1];
 
 << Step2.m
