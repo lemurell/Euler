@@ -5,8 +5,8 @@
 
 
 runList = {};
-For[weight=2,weight<=2,weight+=2,
-	For[Rleft=4,Rleft<=4,Rleft++,
+For[weight=12,weight<=12,weight+=2,
+	For[Rleft=95/10,Rleft<=95/10,Rleft++,
 		AppendTo[runList,{weight, Rleft}];
 	];
 ];
@@ -15,6 +15,7 @@ Ltype = "HoloxMaass";
 level = 1;
 charvalue = "No";
 realOrImaginary = 1;
+OddOrEven = 1;
 coefLimit = getDegree[Ltype];
 knownCoef = {};
 
@@ -28,7 +29,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	Rtuple = {runList[[Rleft,2]]}; 
 	weight = runList[[Rleft,1]];
 
-	parity = {1, weight};
+	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
 	fileNameBase="Runs/HoloxMaass/NewHoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];

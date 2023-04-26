@@ -1166,17 +1166,24 @@ getMultipleStartValues[startValues_, nrOfRuns_, nrOfUnknowns_, realOrImaginary_:
 ]
 
 (* Returns a list of the number of coefficients to use to have a truncation error at most 10^k where k takes all values from minTruncation to maxTruncation *) 
-getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,maxTruncation_:20,minTruncation_:1, maxNN_:70]:=Module[{expz,  incr, M, s, n, k, matrixrows, NN,  error, prec, param, truncation, Nlist},
+getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,maxTruncation_:20,minTruncation_:1, maxNN_:70]:=Module[{digits, expz, incr, M, s, n, k, matrixrows, NN, param, truncation, Nlist, significantrow, precisonrow},
 	param={{0,0,0},{0,1/2,0}};
-    incr=2*Pi*v/Log[10]/DIGITS;           
-    M=5 Sqrt[Log[10]*DIGITS];
+	digits = 20;
+    incr=2*Pi*v/Log[10]/digits;           
+    M=5 Sqrt[Log[10]*digits];
 	expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,maxNN},{k,-M,M,incr}];
 	s=1/2 + I;
 	matrixrows = computeEquation[OMEGA,klist,llist,{},{},param,v,maxNN,incr, M,expz,s];
-	error = Max[Abs[matrixrows[[1,{-2,-1}]]]];
-	prec = Max[Abs[matrixrows[[2]]]];
-Print["Precision: ", prec];
-Print["Max truncation: ", error];
+	If[parity[[1]]==0,
+		significantrow = matrixrows[[1]];
+		precisonrow = matrixrows[[2]];
+	,
+		significantrow = matrixrows[[2]];
+		precisonrow = matrixrows[[1]];
+	];
+	Print["Precision: ", Max[Abs[precisonrow[[{-2,-1}]]]]];
+	Print["Max truncation: ", Max[Abs[significantrow[[{-2,-1}]]]]];
+	
 	truncation = minTruncation;
 	Nlist = {};
 	NN=1;
