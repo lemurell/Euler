@@ -19,7 +19,11 @@ knownCoef = {};
 
 RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
-Rtuple = {11, 5}
+Rtuple = {11, 5};
+testfunctiontype = "Classic";
+initNN = 15;
+minWidth = 40 / (realOrImaginary + 1);
+minMult = 1/200;
 truncationList = {7, 10, 12, 14, 16, 18};
 
 maxPower = 4;
@@ -59,13 +63,23 @@ logQlogN = Table[logQ-Log[n],{n,1,1000}];
 (* Local testfunction parameters. *)
 v=2;
 nrOfExtraEquations = 8;
-Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
-NN = Nlist[[TRUNCDIGITS]];
-initNNList = Nlist[[truncationList]];
+If[testfunctiontype == "Classic",
+	{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,initNN,minMult,realOrImaginary];
+,
+	Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
+	NN = Nlist[[TRUNCDIGITS]];
+	initNNList = Nlist[[truncationList]];
+];
 {plist, highplist, nonplist, knownlist}=getUnknowns[Ldata, NN, maxPower, knownCoef];
 nrOfUnknowns= (2 - Abs[realOrImaginary]) Length[Union[plist, highplist]];
 nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
-{slist, paralist,Param} = getSlistDavid[nrOfEquations];
+If[testfunctiontype == "Classic",
+	Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
+	SDIFF = 1/3;
+	{slist, paralist, Param} = getSlistDavid[nrOfEquations];
+,
+	{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
+];
 
 NLmethod = "Secant";
 nrOfRuns = 50;
