@@ -32,9 +32,9 @@ fileNameBase = "Runs/NL/Test";
 *)
 
 (* Global precision parameters. *)
-PRECISIONMULTIPLE = 4;
+PRECISIONMULTIPLE = 5;
 TRUNCDIGITS = 7;
-DIGITS=TRUNCDIGITS + 6;
+DIGITS=TRUNCDIGITS + 8;
 PRECISION= Max[PRECISIONMULTIPLE * TRUNCDIGITS, MachinePrecision];
 MYPRECISION=PRECISION;
 
@@ -64,6 +64,8 @@ logQlogN = Table[logQ-Log[n],{n,1,1000}];
 v=2;
 nrOfExtraEquations = 8;
 If[testfunctiontype == "Classic",
+	Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
+	SDIFF = 1/3;
 	{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,initNN,minMult,realOrImaginary];
 ,
 	Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
@@ -74,8 +76,6 @@ If[testfunctiontype == "Classic",
 nrOfUnknowns= (2 - Abs[realOrImaginary]) Length[Union[plist, highplist]];
 nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
 If[testfunctiontype == "Classic",
-	Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
-	SDIFF = 1/3;
 	{slist, paralist, Param} = getSlistDavid[nrOfEquations];
 ,
 	{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];

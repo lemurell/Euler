@@ -5,8 +5,8 @@
 
 
 runList = {};
-For[weight=12,weight<=12,weight+=2,
-	For[Rleft=95/10,Rleft<=95/10,Rleft++,
+For[weight=8,weight<=8,weight+=2,
+	For[Rleft=4,Rleft<=4,Rleft++,
 		AppendTo[runList,{weight, Rleft}];
 	];
 ];
@@ -15,7 +15,7 @@ Ltype = "HoloxMaass";
 level = 1;
 charvalue = "No";
 realOrImaginary = 1;
-OddOrEven = 1;
+OddOrEven = 0;
 coefLimit = getDegree[Ltype];
 knownCoef = {};
 
@@ -24,9 +24,10 @@ RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
 testfunctiontype = "Classic";
 If[testfunctiontype == "Classic",
-	initNN = 15;
+	initNN = 20;
 	minWidth = 40 / (realOrImaginary + 1);
 	minMult = 1/200;
+	initNNList = {25, 30, 35, 40, 45, 50}
 ,
 	truncationList = {5, 7, 10, 12, 14, 16, 18};
 ];	

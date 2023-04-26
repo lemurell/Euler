@@ -13,8 +13,8 @@ Ltype = "GL3";
 *)
 
 (* Global precision parameters. *)
-PRECISIONMULTIPLE = 4;
-TRUNCDIGITS=4;
+PRECISIONMULTIPLE = 5;
+TRUNCDIGITS=7;
  
 nrOfExtraEquations = 8;
 
