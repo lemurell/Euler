@@ -59,6 +59,7 @@ llist = getLlist[Ltype, Rinit, parity];
 	startValuePrec = -Log[10, Max[RstepList]];
     
     success = True;
+    successLimit = 10^(-8);
 	MaxSolutions = 1;
 	noImprovement = 0;
 	minRMargin = Infinity;
@@ -149,20 +150,23 @@ Print["startValuePrec: ", startValuePrec];
 			minRMargin = Min[RMargin];
 		,
 			noImprovement ++;
-			If[noImprovement == 2,
+			If[noImprovement == 3,
 				zoomloop = ZoomSteps;
-				success = False;
 			]
 		];
 		
 		If[zoomloop < ZoomSteps,
 			TRUNCDIGITS += 2;
 Print["TRUNCDIGITS: ", TRUNCDIGITS];
-			RstepList = Table[Max[RstepList[[i]]/100, RMargin[[i]]/10],{i,Length[RstepList]}];
+			RstepList = Table[Max[RstepList[[i]]/1000, RMargin[[i]]/10],{i,Length[RstepList]}];
 Print["RstepList: ", RstepList];
 		];
     ];
-
+    
+	If[success && Max[RMargin]>successLimit,
+		success = False;
+	];
+	
 	newR = { meanR, meanR+RMargin };
     Save[fileName ,{Ldata, Rlist, result, intermed, newR, RMargin, coefMargin, maxPower, realOrImaginary}];
     Clear[result];

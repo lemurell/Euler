@@ -12,7 +12,7 @@ Clear[result];
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
  realOrImaginary = 1;
  coefLimit = 4;
- RstepStart = getRstep[Ltype, 1/10^4];
+ RstepStart = getRstep[Ltype, 1/10^6];
  (*RstepStart = {10^(-7),10^(-6),10^(-4)};*)
  Rlimit = 1/100;
  Rinit = {15};
@@ -35,7 +35,7 @@ Clear[result];
  startValues = {}; 
  knownCoef = {{2,1.0484624522346050608`20.0205528820314- 0.37523963887138327`17.57430870932808 I},{5,0.766177577020120230416453-0.1471014533310I}};
  knownCoef={};
- fileNameBase = "Runs/TestZoom6"
+ fileNameBase = "Runs/TestZoom6_2"
  
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV, PRECISIONMULTIPLE TRUNCDIGITSstart];
