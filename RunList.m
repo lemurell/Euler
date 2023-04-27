@@ -7,7 +7,7 @@ Clear[result];
  Ltype = "HoloxMaass";
  level = 1;
  charvalue = "No";
- parity = {1, 30};
+ parity = {0, 8};
  OMEGA = 1;
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
  realOrImaginary = 1;
@@ -19,24 +19,23 @@ Clear[result];
  ZoomSteps = 6;
  EndPrecision = 12;
  PRECISIONMULTIPLE = 5;
- TRUNCDIGITSstart = 10;
+ TRUNCDIGITSstart = 9;
  SDIFF = 1/3;
  NLmethod = "Secant";
  nrOfRuns = 20;
  MaxSolutions = 1;
  sameNN = False;
+ testfunctiontypeZoom = "DS";
  v=2;
  klist = getKlist[Ltype];
  llist = getLlist[Ltype, Rinit, parity];
  Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v]
- trunclist = {9,11,13,15,17,19};
- initNNList= Nlist[trunclist];
  maxPower = 4;
  nrOfExtraEquations = 8;
  startValues = {}; 
  knownCoef = {{2,1.0484624522346050608`20.0205528820314- 0.37523963887138327`17.57430870932808 I},{5,0.766177577020120230416453-0.1471014533310I}};
  knownCoef={};
- fileNameBase = "Runs/HoloxMaass/Improve/TestNewImproveHoloxMaassEvenNew"
+ fileNameBase = "Runs/TestZoom6"
  
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV, PRECISIONMULTIPLE TRUNCDIGITSstart];
