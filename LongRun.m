@@ -22,15 +22,12 @@ knownCoef = {};
 sideLengths = getSideLengths[Ltype, 1];
 RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
-testfunctiontype = "Classic";
-If[testfunctiontype == "Classic",
-	initNN = 20;
-	minWidth = 40 / (realOrImaginary + 1);
-	minMult = 1/200;
-	initNNList = {25, 30, 35, 40, 45, 50}
-,
-	truncationList = {5, 7, 10, 12, 14, 16, 18};
-];	
+
+testfunctiontypeSweep = "Classic";
+testfunctiontypeZoom = "DS";
+initNN = 20;
+minWidth = 40 / (realOrImaginary + 1);
+minMult = 1/200;
 maxPower = 4;
 
 For[Rleft=1,Rleft<=Length[runList],Rleft++,	

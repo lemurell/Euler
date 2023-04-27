@@ -175,7 +175,7 @@ candidates={};
 candStartV={};
 sameLimit= 1/100;
 For[k=1,k<=Length[runAgain],k++,
-	If[Min[Table[Norm[startV[[k,Range[1,2]]]-candStartV[[j,Range[1,2]]]],{j,Length[candidates]}]]>sameLimit || Min[Table[Norm[runAgain[[k]]-candidates[[j]]],{j,Length[candidates]}]]>sameLimit,
+	If[Min[Table[Abs[startV[[k,1]]-candStartV[[j,1]]],{j,Length[candidates]}]]>sameLimit || Min[Table[Norm[runAgain[[k]]-candidates[[j]]],{j,Length[candidates]}]]>sameLimit,
 		AppendTo[candidates,runAgain[[k]]];
 		AppendTo[candStartV,startV[[k]]];
 	];
@@ -187,7 +187,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
 (* Parameters  *)
  RstepStart = RstepStart/100;
  Rlimit = Rlimit;
- ZoomSteps = 5;
+ ZoomSteps = 3;
  TRUNCDIGITSstart = TRUNCDIGITSstart + 2;
  NLmethod = "Secant";
  nrOfRuns = 5;
