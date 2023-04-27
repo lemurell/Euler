@@ -117,7 +117,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
 
 
 (* Parameters  *)
- RstepStart = getRstep[Ltype, 10^(-TRUNCDIGITS+1)];
+ RstepStart = getRstep[Ltype, 10^(-TRUNCDIGITS + 2)];
  Rlimit = 1; (*10 RstepList[[1]];*)
  ZoomSteps =1;
  TRUNCDIGITSstart = TRUNCDIGITS;
@@ -187,7 +187,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
 (* Parameters  *)
  RstepStart = RstepStart/100;
  Rlimit = Rlimit;
- ZoomSteps = 3;
+ ZoomSteps = 6;
  TRUNCDIGITSstart = TRUNCDIGITSstart + 2;
  NLmethod = "Secant";
  nrOfRuns = 5;

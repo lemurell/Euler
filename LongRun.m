@@ -23,8 +23,8 @@ sideLengths = getSideLengths[Ltype, 1];
 RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
 
-testfunctiontypeSweep = "Classic";
-testfunctiontypeZoom = "DS";
+testfunctiontypeSweep = "DS";
+testfunctiontypeZoom = "Classic";
 initNN = 20;
 minWidth = 40 / (realOrImaginary + 1);
 minMult = 1/200;
@@ -37,7 +37,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
-	fileNameBase="Runs/TestNewVersion";
+	fileNameBase="Runs/TestNewVersionCl";
 
 	<< Total.m
 ];
