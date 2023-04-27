@@ -1,21 +1,20 @@
 (* ::Package:: *)
 
+Clear[result];
+st=TimeUsed[];
+
 (* Load files. *)
 <<Lfunctions.m;
 
-(* Parameters to initiate before calling
-fileNameBase="Runs/08/TestVer2.92/SL3_NL" <> ThisFileName ;
+(* Variables to initiate before calling
+fileNameBase = "Runs/08/TestVer2.92/SL3_NL" <> ThisFileName ;
 maxPower = 4;
-Ltype="GL3";
+Ltype = "GL3";
 *)
 
-st=TimeUsed[];
-Clear[result];
-
 (* Global precision parameters. *)
-PRECISIONMULTIPLE = 4;
-TRUNCDIGITS=4;
-SDIFF = 1/3;
+PRECISIONMULTIPLE = 5;
+TRUNCDIGITS=7;
  
 nrOfExtraEquations = 8;
 
@@ -158,7 +157,6 @@ st=TimeUsed[];
 
 
 succList=Get[ fileNameBase <> "Success"];
-(*failList=Get[ fileNameBase <> "Fail"]; *)
 convLimit=0.1;
 runAgain={};
 startV={};
@@ -177,7 +175,7 @@ candidates={};
 candStartV={};
 sameLimit= 1/100;
 For[k=1,k<=Length[runAgain],k++,
-	If[Min[Table[Norm[startV[[k,Range[1,2]]]-candStartV[[j,Range[1,2]]]],{j,Length[candidates]}]]>sameLimit || Min[Table[Norm[runAgain[[k]]-candidates[[j]]],{j,Length[candidates]}]]>sameLimit,
+	If[Min[Table[Abs[startV[[k,1]]-candStartV[[j,1]]],{j,Length[candidates]}]]>sameLimit || Min[Table[Norm[runAgain[[k]]-candidates[[j]]],{j,Length[candidates]}]]>sameLimit,
 		AppendTo[candidates,runAgain[[k]]];
 		AppendTo[candStartV,startV[[k]]];
 	];
@@ -189,7 +187,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
 (* Parameters  *)
  RstepStart = RstepStart/100;
  Rlimit = Rlimit;
- ZoomSteps =3;
+ ZoomSteps = 3;
  TRUNCDIGITSstart = TRUNCDIGITSstart + 2;
  NLmethod = "Secant";
  nrOfRuns = 5;

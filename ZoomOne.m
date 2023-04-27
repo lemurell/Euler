@@ -23,7 +23,6 @@
  NLmethod = "Secant";
  nrOfRuns = 100;
  minWidthList = {40, 60};
- initNNList= {20, 30, 40};
  minMultList = {1/25,1/200};
  MaxSolutions = 5;
  maxPower = 4;
@@ -60,7 +59,6 @@ llist = getLlist[Ltype, Rinit, parity];
 	startValuePrec = -Log[10, Max[RstepList]];
     
     success = True;
-	startNN = initNN;
 	AlreadyExtra = False;
 
     For[zoomloop=1,zoomloop<=ZoomSteps,zoomloop++,
@@ -81,7 +79,13 @@ llist = getLlist[Ltype, Rinit, parity];
 			minMult = minMultList[[Min[zoomloop,Length[minMultList]]]];
 			{NN, sSeq, paraSeq} = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,startNN,minMult,realOrImaginary];
 		];*)
-		NN = initNNList[[zoomloop]];
+		
+		If[testfunctiontypeZoom == "Classic",
+			Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
+			{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,NN,minMult,realOrImaginary];
+		,
+			NN = Nlist[[TRUNCDIGITS]];
+		];
 		If[AlreadyExtra,
 			NN += 5;
 		];
@@ -90,9 +94,13 @@ llist = getLlist[Ltype, Rinit, parity];
 		stillUnknowns = Union[plist,highplist];
 		nrOfUnknowns = (2-Abs[realOrImaginary]) Length[stillUnknowns];
         nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
-		{slist, paralist,Param} = getSlistDavid[nrOfEquations];
-		Print["Unknowns:  ", stillUnknowns , " " ,Length[stillUnknowns], "st"];
-        Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
+		If[testfunctiontypeZoom == "Classic",
+			{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
+		,
+			{slist, paralist, Param} = getSlistDavid[nrOfEquations];
+		];
+Print["Unknowns:  ", stillUnknowns , " " ,Length[stillUnknowns], "st"];
+Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 
         (* Precomputations. *)
         incr=2*Pi*v/Log[10]/DIGITS;  (* Not good if v is large *)

@@ -1,25 +1,43 @@
 (* ::Package:: *)
 
+Clear[result];
 st=TimeUsed[];
 CurrentStep = 1;
 
 (* Load files. *)
-<<Lfunctions.m;
+<< Lfunctions.m;
 
-(* Filename *)
-(*fileNameBase="Runs/NL/" <> ToString[R1Folder] <> "/SL3_NL" <> ThisFileName;
-fileNameBase="Runs/Test/Level2/" <> ThisFileName;*)
-Clear[result];
+(* Variables to initiate before calling
+Ltype = "HoloxMaass";
+level = 1;
+charvalue = "No";
+parity = {1, weight};
+OMEGA = I^weight *(-1)^parity[[1]];
+realOrImaginary = 1;
+coefLimit = getDegree[Ltype];
+knownCoef = {};
+
+RstepList = getRstep[Ltype, 1/20];
+sideCounts = getSideCounts[sideLengths, RstepList];
+Rtuple = {11, 5};
+testfunctiontype = "Classic";
+initNN = 15;
+minWidth = 40 / (realOrImaginary + 1);
+minMult = 1/200;
+
+maxPower = 4;
+
+fileNameBase = "Runs/NL/Test";
+*)
 
 (* Global precision parameters. *)
-PRECISIONMULTIPLE = 3;
-TRUNCDIGITS=4;
+PRECISIONMULTIPLE = 5;
+TRUNCDIGITS = 7;
 DIGITS=TRUNCDIGITS + 8;
 PRECISION= Max[PRECISIONMULTIPLE * TRUNCDIGITS, MachinePrecision];
 MYPRECISION=PRECISION;
 
-(* Data for L-functions (eigenvalues of Maass form) *)
-(*Rtuple = {12.90884204, 0.5739285998} 9990359333/10^9, 4030312899/10^9  1100893454/10^8, 5135607819/10^9  1197851216/10^8,1486085124/10^9{12.2302, 0.60661}6798292257/10^9, 2382341034/10^9*)
+(* Data for L-functions *)
  Rlist = {};
  For[i=-1,i<sideCounts[[1]],i++,
     For[j=-1,j<sideCounts[[2]],j++,
@@ -42,22 +60,34 @@ logQ = N[Log[Q],PRECISION + 2];
 logQlogN = Table[logQ-Log[n],{n,1,1000}];
 
 (* Local testfunction parameters. *)
-Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
 v=2;
-SDIFF = 1/3;
 nrOfExtraEquations = 8;
-{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,initNN,minMult,realOrImaginary];
+SDIFF = 1/3;
+Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
+
+If[testfunctiontypeSweep == "Classic",
+	Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
+	{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,initNN,minMult,realOrImaginary];
+,
+	NN = Nlist[[TRUNCDIGITS]];
+];
+
 {plist, highplist, nonplist, knownlist}=getUnknowns[Ldata, NN, maxPower, knownCoef];
 nrOfUnknowns= (2 - Abs[realOrImaginary]) Length[Union[plist, highplist]];
 nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
-{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
+If[testfunctiontypeSweep == "Classic",
+	{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
+,
+	{slist, paralist, Param} = getSlistDavid[nrOfEquations];
+];
+
 NLmethod = "Secant";
 nrOfRuns = 50;
 MaxSolutions = 20;
-startValuePrec=0;
+startValuePrec = 0;
 
 incr=2*Pi*v/Log[10]/DIGITS;  (* Not good if v is large *)
-M=Sqrt[Log[10]*DIGITS/Param[[1,1]]];
+M = 5*Sqrt[Log[10]*DIGITS];
 Print[N[incr]," M=",N[M]];
 
 expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
@@ -69,7 +99,7 @@ Print["Number of R-values: ", Length[Rlist]];
 Print["First R-value: ",N[Rlist[[1]],8]];
 Print["Filnamn: ",fileNameBase];
 
-Save[fileNameBase ,{DIGITS, PRECISION, TRUNCDIGITS, Ldata, Rlist, g, Param, slist, paralist, NN, minWidth, minWidthList, initNNList, minMultList, maxPower, realOrImaginary}];
+Save[fileNameBase ,{DIGITS, PRECISION, TRUNCDIGITS, Ldata, Rlist, g, Param, slist, paralist, NN, minWidth, minWidthList, NList, minMultList, maxPower, realOrImaginary}];
 
 RowLength = (sideCounts[[2]] + 1)(sideCounts[[3]] + 1);
 If[FileType[ fileNameBase <> "StateData.m"]==File,
@@ -129,8 +159,6 @@ For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
 DeleteFile[fileNameBase <> "StateData.m"];
 
 TimeStep1 = (TimeUsed[]-st)/60;
-Save[fileNameBase <> "Time.txt",TimeStep1];
-
-
+Save[fileNameBase <> "Time.txt", TimeStep1];
 
 << Step2.m
