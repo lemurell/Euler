@@ -119,7 +119,7 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 					Throw["NoConvergence"];
 				];
 				If[k==1,
-					startValues={SetPrecision[removePrimeCoefRubbish[result[Rtuple][[1,minIdx]], coefLimit ,realOrImaginary],PRECISION + 2 PRECISIONMULTIPLE]}; 
+					startValues={SetPrecision[removePrimeCoefRubbish[result[Rtuple][[1,1]], coefLimit ,realOrImaginary],PRECISION + 2 PRECISIONMULTIPLE]}; 
 				];
             ];
 			{Rapprox, meanR, coefApprox, meanCoef, RMargin, coefMargin} = SetPrecision[approximationWithErrorMargin[Rlist, result, 1],PRECISION + 2 PRECISIONMULTIPLE];
