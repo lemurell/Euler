@@ -127,7 +127,8 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
  extraAtCenter = 3;
  sameNN = True;
  nrOfExtraEquations = 8;
- 
+ successLimit = 10^(-2);
+
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV,PRECISIONMULTIPLE TRUNCDIGITSstart];
  For[Rloop=1,Rloop<=Length[RstartList],Rloop++,
@@ -157,7 +158,7 @@ st=TimeUsed[];
 
 
 succList=Get[ fileNameBase <> "Success"];
-convLimit=0.1;
+convLimit=100;
 runAgain={};
 startV={};
 For[k=1,k<=Length[succList],k++,
@@ -196,6 +197,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
  extraAtCenter = 4;
  nrOfExtraEquations = 8;
  fileNameBase =  fileNameBase <> "XX"
+ successLimit = 10^(-4);
  
  sameNN = False;
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];

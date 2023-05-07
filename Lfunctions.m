@@ -1167,10 +1167,14 @@ getMultipleStartValues[startValues_, nrOfRuns_, nrOfUnknowns_, realOrImaginary_:
 
 (* Returns a list of the number of coefficients to use to have a truncation error at most 10^k where k takes all values from minTruncation to maxTruncation *) 
 getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,quadfact_:0, maxTruncation_:20,minTruncation_:1, maxNN_:70]:=Module[{digits, expz, incr, M, s, n, k, matrixrows, NN, param, truncation, Nlist, significantrow, precisonrow},
-	param={{quadfact,0,0},{quadfact,1/2,0}};
+	param={{quadfact,0,0},{quadfact,3/2,0}};
 	digits = 20;
-    incr=2*Pi*v/Log[10]/digits;           
-    M=5 Sqrt[Log[10]*digits];
+    incr=2*Pi*v/Log[10]/digits;  
+    If[quadfact>0,
+        M=Sqrt[Log[10]*digits/quadfact];
+    ,
+	    M=7 Sqrt[Log[10]*digits];
+    ];         
 	expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,maxNN},{k,-M,M,incr}];
 	s=1/2 + I;
 	matrixrows = computeEquation[OMEGA,klist,llist,{},{},param,v,maxNN,incr, M,expz,s];
@@ -1336,7 +1340,7 @@ Print["nrOfEquations ", nrOfEquations, " nrOfSvalues ", Length[slist]];
 ]
 
 
-getSlistDavid[nrOfEquations_]:=Module[{up, slist, down, i, blist,continue},
+getSlistDavid[nrOfEquations_,width_:2]:=Module[{up, slist, down, i, blist,continue},
 	slist = {1/2+I};
 	up=1;
 	down=2;
@@ -1346,7 +1350,7 @@ getSlistDavid[nrOfEquations_]:=Module[{up, slist, down, i, blist,continue},
 		continue=True;
 		While[continue,
 			up ++;
-			If[up>=down,
+			If[up>=width down,
 				up=1;
 				down++;
 				continue=False;

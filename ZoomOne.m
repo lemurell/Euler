@@ -32,6 +32,7 @@ Clear[result];
  startValues = {};
  knownCoef = {{2, 1.04846245223460506080-0.375239638871383270 I }};
  sameNN = False;
+ successLimit = 10^(-2);
 *)
 
 
@@ -50,16 +51,15 @@ llist = getLlist[Ltype, Rinit, parity];
     (* Precision parameter. *)
 
     Rtuple = Rinit;
-    RstepList = RstepStart;
+    RsteplistZoom = RstepStart;
     Print[fileName];
 	TRUNCDIGITS = TRUNCDIGITSstart;
 	Print["TRUNCDIGITS: ", TRUNCDIGITS];
 	
     intermed={};
-	startValuePrec = -Log[10, Max[RstepList]];
+	startValuePrec = -Log[10, Max[RsteplistZoom]];
     
     success = True;
-    successLimit = 10^(-8);
 	MaxSolutions = 1;
 	noImprovement = 0;
 	minRMargin = Infinity;
@@ -99,7 +99,7 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 
         (* Precomputations. *)
         incr=2*Pi*v/Log[10]/DIGITS;  (* Not good if v is large *)
-        M=5 Sqrt[Log[10]*DIGITS];
+        M=Mfactor Sqrt[Log[10]*DIGITS];
         expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
 
         llist = getLlist[Ltype, Rtuple, parity];
@@ -107,7 +107,7 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 		Catch[ 	
 			Rlist = {Rtuple};	  
 			For[k=1, k<=getNrOfParameters[Ltype],k++,
-				AppendTo[Rlist, Rtuple + RstepList * Table[DiscreteIndicator[i,k,Table[j,{j,getNrOfParameters[Ltype]}]],{i,getNrOfParameters[Ltype]}]  ];
+				AppendTo[Rlist, Rtuple + RsteplistZoom * Table[DiscreteIndicator[i,k,Table[j,{j,getNrOfParameters[Ltype]}]],{i,getNrOfParameters[Ltype]}]  ];
 			];
 			
 			For[k=1, k<=getNrOfParameters[Ltype] + 1, k++,
@@ -158,12 +158,12 @@ Print["startValuePrec: ", startValuePrec];
 		If[zoomloop < ZoomSteps,
 			TRUNCDIGITS += 2;
 Print["TRUNCDIGITS: ", TRUNCDIGITS];
-			RstepList = Table[Max[RstepList[[i]]/1000, RMargin[[i]]/10],{i,Length[RstepList]}];
-Print["RstepList: ", RstepList];
+			RsteplistZoom = Table[Max[RsteplistZoom[[i]]/1000, RMargin[[i]]/10],{i,Length[RsteplistZoom]}];
+Print["RsteplistZoom: ", RsteplistZoom];
 		];
     ];
     
-	If[success && Max[RMargin]>successLimit,
+	If[Max[RMargin]>successLimit || coefMargin[[1]]>successLimit,
 		success = False;
 	];
 	

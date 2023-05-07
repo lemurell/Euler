@@ -63,7 +63,9 @@ logQlogN = Table[logQ-Log[n],{n,1,1000}];
 v=2;
 nrOfExtraEquations = 8;
 SDIFF = 1/3;
+st = TimeUsed[];
 Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
+Print[TimeUsed[]-st, Nlist];
 
 If[testfunctiontypeSweep == "Classic",
 	Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
@@ -79,6 +81,7 @@ If[testfunctiontypeSweep == "Classic",
 	{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
 ,
 	{slist, paralist, Param} = getSlistDavid[nrOfEquations];
+	Print[Param];
 ];
 
 NLmethod = "Secant";
@@ -86,8 +89,9 @@ nrOfRuns = 50;
 MaxSolutions = 20;
 startValuePrec = 0;
 
+Mfactor = 7;
 incr=2*Pi*v/Log[10]/DIGITS;  (* Not good if v is large *)
-M = 5*Sqrt[Log[10]*DIGITS];
+M = Mfactor*Sqrt[Log[10]*DIGITS];
 Print[N[incr]," M=",N[M]];
 
 expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];

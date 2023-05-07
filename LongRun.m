@@ -5,8 +5,8 @@
 
 
 runList = {};
-For[weight=8,weight<=8,weight+=2,
-	For[Rleft=4,Rleft<=4,Rleft++,
+For[weight=6,weight<=6,weight+=2,
+	For[Rleft=3,Rleft<=9,Rleft++,
 		AppendTo[runList,{weight, Rleft}];
 	];
 ];
@@ -15,7 +15,7 @@ Ltype = "HoloxMaass";
 level = 1;
 charvalue = "No";
 realOrImaginary = 1;
-OddOrEven = 0;
+OddOrEven = 1;
 coefLimit = getDegree[Ltype];
 knownCoef = {};
 
@@ -24,7 +24,7 @@ RstepList = getRstep[Ltype, 1/20];
 sideCounts = getSideCounts[sideLengths, RstepList];
 
 testfunctiontypeSweep = "DS";
-testfunctiontypeZoom = "Classic";
+testfunctiontypeZoom = "DS";
 initNN = 20;
 minWidth = 40 / (realOrImaginary + 1);
 minMult = 1/200;
@@ -37,7 +37,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
-	fileNameBase="Runs/TestNewVersionCl";
+	fileNameBase="Runs/HoloxMaass/DS7HoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
 
 	<< Total.m
 ];
