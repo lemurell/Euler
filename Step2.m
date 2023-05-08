@@ -128,7 +128,11 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
  sameNN = True;
  nrOfExtraEquations = 8;
  successLimit = 10^(-3);
+ bwidth = 2;
 
+ st = TimeUsed[];
+ Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v,bwidth];
+ Print[TimeUsed[]-st, Nlist];
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV,PRECISIONMULTIPLE TRUNCDIGITSstart];
  For[Rloop=1,Rloop<=Length[RstartList],Rloop++,

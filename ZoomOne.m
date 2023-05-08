@@ -81,9 +81,6 @@ llist = getLlist[Ltype, Rinit, parity];
 		,
 			NN = Nlist[[TRUNCDIGITS]];
 		];
-		If[AlreadyExtra,
-			NN += 5;
-		];
 		startNN = Ceiling[NN * 11/10] ;
 		{plist, highplist, nonplist, knownlist} = getUnknowns[Ldata, NN ,maxPower, knownCoef];
 		stillUnknowns = Union[plist,highplist];

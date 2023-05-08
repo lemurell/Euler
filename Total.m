@@ -61,10 +61,11 @@ logQlogN = Table[logQ-Log[n],{n,1,1000}];
 
 (* Local testfunction parameters. *)
 v=2;
+bwidth = 1;
 nrOfExtraEquations = 8;
 SDIFF = 1/3;
 st = TimeUsed[];
-Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v];
+Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v,bwidth];
 Print[TimeUsed[]-st, Nlist];
 
 If[testfunctiontypeSweep == "Classic",
@@ -80,7 +81,7 @@ nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
 If[testfunctiontypeSweep == "Classic",
 	{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
 ,
-	{slist, paralist, Param} = getSlistDavid[nrOfEquations, 1];
+	{slist, paralist, Param} = getSlistDavid[nrOfEquations, bwidth];
 	Print[Param];
 ];
 

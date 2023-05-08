@@ -1166,8 +1166,8 @@ getMultipleStartValues[startValues_, nrOfRuns_, nrOfUnknowns_, realOrImaginary_:
 ]
 
 (* Returns a list of the number of coefficients to use to have a truncation error at most 10^k where k takes all values from minTruncation to maxTruncation *) 
-getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,quadfact_:0, maxTruncation_:20,minTruncation_:1, maxNN_:70]:=Module[{digits, expz, incr, M, s, n, k, matrixrows, NN, param, truncation, Nlist, significantrow, precisonrow},
-	param={{quadfact,0,0},{quadfact,3/2,0}};
+getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,bwidth_:2,quadfact_:0, maxTruncation_:20,minTruncation_:1, maxNN_:70]:=Module[{digits, expz, incr, M, s, n, k, matrixrows, NN, param, truncation, Nlist, significantrow, precisonrow},
+	param={{quadfact,0,0},{quadfact,Min[bwidth, 3/2],0}};
 	digits = 20;
     incr=2*Pi*v/Log[10]/digits;  
     If[quadfact>0,
