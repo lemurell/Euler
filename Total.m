@@ -32,7 +32,7 @@ fileNameBase = "Runs/NL/Test";
 
 (* Global precision parameters. *)
 PRECISIONMULTIPLE = 5;
-TRUNCDIGITS = 7;
+TRUNCDIGITS = 5;
 DIGITS=TRUNCDIGITS + 8;
 PRECISION= Max[PRECISIONMULTIPLE * TRUNCDIGITS, MachinePrecision];
 MYPRECISION=PRECISION;
@@ -80,7 +80,7 @@ nrOfEquations = nrOfUnknowns + nrOfExtraEquations;
 If[testfunctiontypeSweep == "Classic",
 	{slist, paralist} = getSlist[sSeq, paraSeq, nrOfEquations,SDIFF,realOrImaginary];
 ,
-	{slist, paralist, Param} = getSlistDavid[nrOfEquations];
+	{slist, paralist, Param} = getSlistDavid[nrOfEquations, 1];
 	Print[Param];
 ];
 

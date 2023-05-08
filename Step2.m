@@ -119,7 +119,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
 (* Parameters  *)
  RstepStart = getRstep[Ltype, 10^(-TRUNCDIGITS + 2)];
  Rlimit = 1; (*10 RstepList[[1]];*)
- ZoomSteps =1;
+ ZoomSteps =3;
  TRUNCDIGITSstart = TRUNCDIGITS;
  NLmethod = "Secant";
  nrOfRuns = 5;
@@ -127,7 +127,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
  extraAtCenter = 3;
  sameNN = True;
  nrOfExtraEquations = 8;
- successLimit = 10^(-2);
+ successLimit = 10^(-3);
 
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV,PRECISIONMULTIPLE TRUNCDIGITSstart];
@@ -188,8 +188,8 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
 (* Parameters  *)
  RstepStart = RstepStart/100;
  Rlimit = Rlimit;
- ZoomSteps = 6;
- TRUNCDIGITSstart = TRUNCDIGITSstart + 2;
+ ZoomSteps = 5;
+ TRUNCDIGITSstart = TRUNCDIGITSstart + 6;
  NLmethod = "Secant";
  nrOfRuns = 5;
  MaxSolutions = 1;
@@ -197,7 +197,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
  extraAtCenter = 4;
  nrOfExtraEquations = 8;
  fileNameBase =  fileNameBase <> "XX"
- successLimit = 10^(-4);
+ successLimit = 10^(-6);
  
  sameNN = False;
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];

@@ -5,8 +5,8 @@
 
 
 runList = {};
-For[weight=6,weight<=6,weight+=2,
-	For[Rleft=3,Rleft<=9,Rleft++,
+For[weight=4,weight<=4,weight+=2,
+	For[Rleft=7,Rleft<=19,Rleft++,
 		AppendTo[runList,{weight, Rleft}];
 	];
 ];
@@ -20,7 +20,7 @@ coefLimit = getDegree[Ltype];
 knownCoef = {};
 
 sideLengths = getSideLengths[Ltype, 1];
-RstepList = getRstep[Ltype, 1/20];
+RstepList = getRstep[Ltype, 1/100];
 sideCounts = getSideCounts[sideLengths, RstepList];
 
 testfunctiontypeSweep = "DS";
@@ -37,7 +37,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
-	fileNameBase="Runs/HoloxMaass/DS7HoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
+	fileNameBase="Runs/HoloxMaass/DS57HoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
 
 	<< Total.m
 ];
