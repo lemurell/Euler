@@ -5,8 +5,8 @@
 
 
 runList = {};
-For[weight=4,weight<=4,weight+=2,
-	For[Rleft=7,Rleft<=19,Rleft++,
+For[weight=2,weight<=2,weight+=2,
+	For[Rleft=9,Rleft<=10,Rleft++,
 		AppendTo[runList,{weight, Rleft}];
 	];
 ];
@@ -37,7 +37,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
-	fileNameBase="Runs/HoloxMaass/DS57HoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
+	fileNameBase="Runs/TestDS57HoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
 
 	<< Total.m
 ];

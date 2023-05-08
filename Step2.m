@@ -108,6 +108,18 @@ For[i=1,i<third,i++,
 
 
 tv=Sort[allTogList];
+sameLimit= 1/100;
+Print["CandList1: ", {Length[tv],tv}];
+For[j=1,j < Length[tv],j++,
+	k = j + 1;
+	While[k <= Length[tv],
+		If[Abs[tv[[k,2,1]]-tv[[j,2,1]]] < 10 * sameLimit && Norm[tv[[k,1]]-tv[[j,1]]] < sameLimit,
+			tv = Delete[tv, k];
+		,
+			k++;
+		];
+	];
+];
 Print["CandList1: ", {Length[tv],tv}]
 
 candidates = tv[[All,1]];
@@ -162,15 +174,17 @@ st=TimeUsed[];
 
 
 succList=Get[ fileNameBase <> "Success"];
-convLimit=100;
+convLimit=10;
 runAgain={};
 startV={};
+RMarginList = {};
 For[k=1,k<=Length[succList],k++,
 	If[Length[succList[[k,3,3]]]>0,
 		If[Min[Table[Norm[succList[[k,3,3,j]]],{j,Length[succList[[k,3,3]]]}]]<convLimit,
 			minIdx=minIndex[succList[[k,3]]];
 			AppendTo[runAgain,succList[[k,2]]];
 			AppendTo[startV,succList[[k,3,1,minIdx]]];
+			AppendTo[RMarginList,Norm[succList[[k,3,3,minIdx]]]];
 		];
 	];
 ];
@@ -178,11 +192,28 @@ Print["Nr in RunAgain: ", Length[runAgain]];
 
 candidates={};
 candStartV={};
+candRMargin = {};
 sameLimit= 1/100;
 For[k=1,k<=Length[runAgain],k++,
-	If[Min[Table[Abs[startV[[k,1]]-candStartV[[j,1]]],{j,Length[candidates]}]]>sameLimit || Min[Table[Norm[runAgain[[k]]-candidates[[j]]],{j,Length[candidates]}]]>sameLimit,
-		AppendTo[candidates,runAgain[[k]]];
-		AppendTo[candStartV,startV[[k]]];
+	j = 0;
+	While[j <= Length[candidates],
+		If[j == Length[candidates],
+			AppendTo[candidates,runAgain[[k]]];
+			AppendTo[candStartV,startV[[k]]];		
+			AppendTo[candRMargin,RMarginList[[k]]];
+			j++;		
+		,
+			j++;
+			If[Abs[startV[[k,1]]-candStartV[[j,1]]] < sameLimit && Norm[runAgain[[k]]-candidates[[j]]] < sameLimit,
+				If[RMarginList[[k]] < candRMargin[[j]],
+					candidates[[j]] = runAgain[[k]];
+					candStartV[[j]] = startV[[k]];
+					candRMargin[[j]] = RMarginList[[k]];
+				,
+					j = Infinity;
+				};
+			];
+		];
 	];
 ];
 Print["Candidates: ", candidates];
