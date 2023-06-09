@@ -24,6 +24,7 @@ testfunctiontype = "Classic";
 initNN = 15;
 minWidth = 40 / (realOrImaginary + 1);
 minMult = 1/200;
+bwidthStart = 1;
 
 maxPower = 4;
 
@@ -61,7 +62,7 @@ logQlogN = Table[logQ-Log[n],{n,1,1000}];
 
 (* Local testfunction parameters. *)
 v=2;
-bwidth = 1;
+bwidth = bwidthStart;
 nrOfExtraEquations = 8;
 SDIFF = 1/3;
 st = TimeUsed[];

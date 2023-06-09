@@ -5,8 +5,8 @@
 
 
 runList = {};
-For[weight=2,weight<=2,weight+=2,
-	For[Rleft=9,Rleft<=10,Rleft++,
+For[weight=32,weight<=40,weight+=2,
+	For[Rleft=0,Rleft<=1,Rleft++,
 		AppendTo[runList,{weight, Rleft}];
 	];
 ];
@@ -15,7 +15,7 @@ Ltype = "HoloxMaass";
 level = 1;
 charvalue = "No";
 realOrImaginary = 1;
-OddOrEven = 1;
+OddOrEven = 0;
 coefLimit = getDegree[Ltype];
 knownCoef = {};
 
@@ -28,6 +28,8 @@ testfunctiontypeZoom = "DS";
 initNN = 20;
 minWidth = 40 / (realOrImaginary + 1);
 minMult = 1/200;
+bwidthStart = 3/2;
+
 maxPower = 4;
 
 For[Rleft=1,Rleft<=Length[runList],Rleft++,	
@@ -37,7 +39,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	parity = {OddOrEven, weight};
 	OMEGA = I^weight *(-1)^parity[[1]];
 	
-	fileNameBase="Runs/TestDS57HoloxMaass_Odd_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
+	fileNameBase="Runs/HoloxMaass/DS32HoloxMaass_Even_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
 
 	<< Total.m
 ];

@@ -37,7 +37,9 @@ For[i=1,i<Length[Rlist],i++,
 
 				If[closeProportion[Rapprox, Rlist[[i]], {Rstep *(1+margin)} ] >1/2 && closeProportion[{meanR},Rlist[[i]], {Rstep *(1+margin)} ]==1,
 					coef = removePrimeCoefRubbish[coef, coefLimit, realOrImaginary];
+					If[Length[coef]>0,
 					AppendTo[allTogList,{meanR,coef}];
+					];
 				];
 			];
 		];
@@ -65,7 +67,9 @@ For[i=1,i<col,i++,
 
 				If[closeProportion[Rapprox, Rlist[[ind]], {Rstep1 *(1+margin),Rstep2 *(1+margin)} ] >1/2 && closeProportion[{meanR},Rlist[[ind]], {Rstep1 *(1+margin),Rstep2 *(1+margin)} ]==1,
 					coef = removePrimeCoefRubbish[coef, coefLimit, realOrImaginary];
+					If[Length[coef]>0,
 					AppendTo[allTogList,{meanR,coef}];
+					];
 				];
 			];
 		];
@@ -96,7 +100,9 @@ For[i=1,i<third,i++,
 					{Rapprox, meanR, coefApprox, coef, RMargin, coefMargin}=approximationWithErrorMargin[Rlist[[{ind,ind+1,ind+row, ind+row*col}]], result, k];
 					If[closeProportion[Rapprox, Rlist[[ind]], RstepListLocal * (1+margin)] >1/2 && closeProportion[{meanR},Rlist[[ind]], RstepListLocal * (1+margin) ]==1,
 						coef = removePrimeCoefRubbish[coef, coefLimit, realOrImaginary];
+						If[Length[coef]>0,
 						AppendTo[allTogList,{meanR,coef}];
+						];
 					];
 				];
 			];
@@ -120,7 +126,7 @@ For[j=1,j < Length[tv],j++,
 		];
 	];
 ];
-Print["CandList1: ", {Length[tv],tv}]
+Print["CandList1: ", {Length[tv],tv}];
 
 candidates = tv[[All,1]];
 candStartV = tv[[All,2]];
@@ -131,7 +137,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
 (* Parameters  *)
  RstepStart = getRstep[Ltype, 10^(-TRUNCDIGITS + 2)];
  Rlimit = 1; (*10 RstepList[[1]];*)
- ZoomSteps =3;
+ ZoomSteps = 3;
  TRUNCDIGITSstart = TRUNCDIGITS;
  NLmethod = "Secant";
  nrOfRuns = 5;
@@ -195,25 +201,24 @@ candStartV={};
 candRMargin = {};
 sameLimit= 1/100;
 For[k=1,k<=Length[runAgain],k++,
-	j = 0;
-	While[j <= Length[candidates],
-		If[j == Length[candidates],
+	j = 1;
+	While[j <= Length[candidates] + 1,
+		If[j > Length[candidates],
 			AppendTo[candidates,runAgain[[k]]];
 			AppendTo[candStartV,startV[[k]]];		
 			AppendTo[candRMargin,RMarginList[[k]]];
-			j++;		
+			j = Infinity;		
 		,
-			j++;
 			If[Abs[startV[[k,1]]-candStartV[[j,1]]] < sameLimit && Norm[runAgain[[k]]-candidates[[j]]] < sameLimit,
 				If[RMarginList[[k]] < candRMargin[[j]],
 					candidates[[j]] = runAgain[[k]];
 					candStartV[[j]] = startV[[k]];
 					candRMargin[[j]] = RMarginList[[k]];
-				,
-					j = Infinity;
-				};
+				];
+				j = Infinity;
 			];
 		];
+		j++;
 	];
 ];
 Print["Candidates: ", candidates];
