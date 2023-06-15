@@ -1553,11 +1553,11 @@ saveCandidate[fileName_,saveData_]:=Module[{},
 ]
 
 saveFinal[directory_:"Upload"]:=Module[{sourceFiles,Rtuple, coef, error, pLI, finalLimit, oKLimit, prec, idx, dataListAgain, listFileAgain, dataListPart, listFilePart, saveData, dataList, listFile, k, targetFileBase,  pcoef, len,  res, parity},
-	sourceFiles = FileNames["*Zoom*",directory];
+	sourceFiles = FileNames["*XXZoom*",directory];
 	Get[sourceFiles[[1]]];  (* Get Ldata *)
-	finalLimit = 10^(-14)/2;
-	oKLimit = 10^(-8)/2;
-
+	finalLimit = 10^(-10)/2;
+	oKLimit = 10^(-7)/2;
+	
 	If[Length[Ldata]>4,
 		parity = Ldata[[5]];
 	,

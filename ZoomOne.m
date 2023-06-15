@@ -155,7 +155,7 @@ Print["startValuePrec: ", startValuePrec];
 		If[zoomloop < ZoomSteps,
 			TRUNCDIGITS += 2;
 Print["TRUNCDIGITS: ", TRUNCDIGITS];
-			RsteplistZoom = Table[Max[RsteplistZoom[[i]]/1000, RMargin[[i]]/10],{i,Length[RsteplistZoom]}];
+			RsteplistZoom = Table[Max[RsteplistZoom[[i]]/10000, Min[(3/2)*RsteplistZoom[[i]],RMargin[[i]]/10]],{i,Length[RsteplistZoom]}];
 Print["RsteplistZoom: ", RsteplistZoom];
 		];
     ];

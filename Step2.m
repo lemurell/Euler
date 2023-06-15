@@ -145,7 +145,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
  extraAtCenter = 3;
  sameNN = True;
  nrOfExtraEquations = 8;
- successLimit = 10^(-3);
+ successLimit = 10^(-2);
  bwidth = 2;
 
  st = TimeUsed[];

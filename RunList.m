@@ -4,11 +4,12 @@
 Clear[result];
 
 (* Parameters to initiate before calling *)
- Ltype = "HoloxMaass";
+ Ltype = "SP4";
  level = 1;
  charvalue = "No";
- parity = {OddOrEven, weight};
- OMEGA = (-1)^OddOrEven * I^weight;
+ (* parity = {OddOrEven, weight};
+ OMEGA = (-1)^OddOrEven * I^weight;*)
+ OMEGA = (-1)^(parity[[1]]+parity[[2]]);
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
  realOrImaginary = 1;
  coefLimit = 4;
