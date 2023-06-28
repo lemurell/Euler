@@ -280,7 +280,7 @@ Print["This is version 2.99 and the level is: ", level];*)
             AppendTo[fullmatrix, matrixrows[[j]]];
         ];
     ];
-Print["Minsta element: ", Max[Abs[fullmatrix[[All,-1]]]]];
+Print["Smallest element: ", Max[Abs[fullmatrix[[All,-1]]]]];
 	fullmatrix
 ]
 

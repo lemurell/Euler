@@ -162,7 +162,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
 		startValues = {};
 	];
     << ZoomOne.m;
-    PrependTo[answer,Rinit];
+    PrependTo[answer,Ldata];
     If[success,
         saveCandidate[fileNameBase <> "Success",answer];
     ,

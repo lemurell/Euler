@@ -5,22 +5,22 @@
 
 
 runList = {};
-For[weight=32,weight<=40,weight+=2,
-	For[Rleft=0,Rleft<=1,Rleft++,
-		AppendTo[runList,{weight, Rleft}];
+For[a1 = 6, a1<=6, a1++,
+	For[a2 = 2,a2<=2, a2++,
+		AppendTo[runList,{a1, a2}];
 	];
 ];
 
-Ltype = "HoloxMaass";
+Ltype = "SP4";
 level = 1;
 charvalue = "No";
 realOrImaginary = 1;
-OddOrEven = 0;
+parity = {0, 0};
 coefLimit = getDegree[Ltype];
 knownCoef = {};
 
 sideLengths = getSideLengths[Ltype, 1];
-RstepList = getRstep[Ltype, 1/100];
+RstepList = getRstep[Ltype, 1/10];
 sideCounts = getSideCounts[sideLengths, RstepList];
 
 testfunctiontypeSweep = "DS";
@@ -33,13 +33,10 @@ bwidthStart = 3/2;
 maxPower = 4;
 
 For[Rleft=1,Rleft<=Length[runList],Rleft++,	
-	Rtuple = {runList[[Rleft,2]]}; 
-	weight = runList[[Rleft,1]];
-
-	parity = {OddOrEven, weight};
-	OMEGA = I^weight *(-1)^parity[[1]];
+	Rtuple = runList[[Rleft]]; 
+	OMEGA = (-1)^(parity[[1]] + parity[[2]]);
 	
-	fileNameBase="Runs/HoloxMaass/DS32HoloxMaass_Even_" <> ToString[weight] <> "_" <> ToString[Rtuple[[1]]];
+	fileNameBase="Runs/Test_SP4_" <> ToString[parity[[1]]] <> "_" <> ToString[parity[[2]]]<> "_" <> ToString[Rtuple[[1]]] <> "_"<> ToString[Rtuple[[2]]] ;
 
 	<< Total.m
 ];

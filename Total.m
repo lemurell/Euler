@@ -103,7 +103,7 @@ Print["Unknowns: ", Union[plist, highplist]];
 Print["Number of extra equations: ",  nrOfExtraEquations];
 Print["Number of R-values: ", Length[Rlist]];
 Print["First R-value: ",N[Rlist[[1]],8]];
-Print["Filnamn: ",fileNameBase];
+Print["Filename: ",fileNameBase];
 
 Save[fileNameBase ,{DIGITS, PRECISION, TRUNCDIGITS, Ldata, Rlist, g, Param, slist, paralist, NN, minWidth, minWidthList, NList, minMultList, maxPower, realOrImaginary}];
 
