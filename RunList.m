@@ -27,6 +27,7 @@ Clear[result];
  nrOfRuns = 20;
  MaxSolutions = 1;
  sameNN = False;
+ useSameTruncation = False;
  testfunctiontypeZoom = "DS";
  v=2;
  bwidth = 2;

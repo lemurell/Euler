@@ -69,6 +69,7 @@ For[i=1,i<col,i++,
 					coef = removePrimeCoefRubbish[coef, coefLimit, realOrImaginary];
 					If[Length[coef]>0,
 					AppendTo[allTogList,{meanR,coef}];
+					Print[{meanR,Rlist[[ind]],Norm[meanR - Rlist[[ind]]]}];
 					];
 				];
 			];
@@ -146,6 +147,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
  sameNN = True;
  nrOfExtraEquations = 8;
  successLimit = 10^(-2);
+ useSameTruncation = True;
  bwidth = 2;
 
  st = TimeUsed[];
@@ -238,6 +240,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
  nrOfExtraEquations = 8;
  fileNameBase =  fileNameBase <> "XX"
  successLimit = 10^(-6);
+ useSameTruncation = False;
  
  sameNN = False;
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];

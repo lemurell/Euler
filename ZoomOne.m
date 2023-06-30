@@ -33,6 +33,7 @@ Clear[result];
  knownCoef = {{2, 1.04846245223460506080-0.375239638871383270 I }};
  sameNN = False;
  successLimit = 10^(-2);
+ useSameTruncation = False;
 *)
 
 
@@ -62,6 +63,7 @@ llist = getLlist[Ltype, Rinit, parity];
     success = True;
 	MaxSolutions = 1;
 	noImprovement = 0;
+	sameTruncation = 0;
 	minRMargin = Infinity;
 
     For[zoomloop=1,zoomloop<=ZoomSteps,zoomloop++,
@@ -119,6 +121,7 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 					startValues={SetPrecision[removePrimeCoefRubbish[result[Rtuple][[1,1]], coefLimit ,realOrImaginary],PRECISION + 2 PRECISIONMULTIPLE]}; 
 				];
             ];
+            errorSize = Norm[result[Rtuple][[3,1]]];
 			{Rapprox, meanR, coefApprox, meanCoef, RMargin, coefMargin} = SetPrecision[approximationWithErrorMargin[Rlist, result, 1],PRECISION + 2 PRECISIONMULTIPLE];
 Print["meanR: ", meanR];
 Print["meanR margin: ",  RMargin];
@@ -147,13 +150,28 @@ Print["startValuePrec: ", startValuePrec];
 			minRMargin = Min[RMargin];
 		,
 			noImprovement ++;
-			If[noImprovement == 3,
+			If[noImprovement == 2,
 				zoomloop = ZoomSteps;
-			]
+			];
 		];
 		
 		If[zoomloop < ZoomSteps,
-			TRUNCDIGITS += 2;
+			If[errorSize*10^TRUNCDIGITS > 1000 && useSameTruncation,
+				sameTruncation++;
+				zoomloop--;
+				If[sameTruncation >= 3,
+					If[Max[RMargin] > 0.1,
+						zoomloop = ZoomSteps;
+					.
+						zoomloop++;
+						sameTruncation = 0;
+						TRUNCDIGITS += 2;
+					];
+				];
+			,
+				sameTruncation = 0;
+				TRUNCDIGITS += 2;
+			];
 Print["TRUNCDIGITS: ", TRUNCDIGITS];
 			RsteplistZoom = Table[Max[RsteplistZoom[[i]]/10000, Min[(3/2)*RsteplistZoom[[i]],RMargin[[i]]/10]],{i,Length[RsteplistZoom]}];
 Print["RsteplistZoom: ", RsteplistZoom];
