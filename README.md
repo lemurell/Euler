@@ -75,3 +75,7 @@ The file that ends in XXSuccess contains a list of all results that are estimate
 ## The file LongRun.m
 
 This file contains an example on how to set the necessary parameters and then run the file Total.m. It's possible to do several different boxes in one run. The actual content of the file will compute the self dual L-function of type r0r0r0r0 with the smallest larger spectral parameter, i.e. this one https://www.lmfdb.org/L/4/1/1.1/r0e4/c4.72c12.47/0.
+
+Before running the file all the Mathematica files in this folder should be downloaded and put in a local folder. In this folder one should create a subfolder Runs where generated files will end up. 
+
+It takes approxiamately 20 minutes to run on an average computer.
