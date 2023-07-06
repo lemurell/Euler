@@ -228,9 +228,9 @@ candStep3 = candidates;
 Save[fileNameBase <> "Candidates.txt", candStep3];
 
 (* Parameters  *)
- RstepStart = RstepStart/100;
+ RstepStart = RstepStart/10000;
  Rlimit = Rlimit;
- ZoomSteps = 5;
+ ZoomSteps = 4;
  TRUNCDIGITSstart = TRUNCDIGITSstart + 6;
  NLmethod = "Secant";
  nrOfRuns = 5;

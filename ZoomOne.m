@@ -162,7 +162,7 @@ Print["startValuePrec: ", startValuePrec];
 				If[sameTruncation >= 3,
 					If[Max[RMargin] > 0.1,
 						zoomloop = ZoomSteps;
-					.
+					,
 						zoomloop++;
 						sameTruncation = 0;
 						TRUNCDIGITS += 2;

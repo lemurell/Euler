@@ -36,7 +36,7 @@ For[Rleft=1,Rleft<=Length[runList],Rleft++,
 	Rtuple = runList[[Rleft]]; 
 	OMEGA = (-1)^(parity[[1]] + parity[[2]]);
 	
-	fileNameBase="Runs/Test_SP4_" <> ToString[parity[[1]]] <> "_" <> ToString[parity[[2]]]<> "_" <> ToString[Rtuple[[1]]] <> "_"<> ToString[Rtuple[[2]]] ;
+	fileNameBase="Runs/SP4_" <> ToString[parity[[1]]] <> "_" <> ToString[parity[[2]]]<> "_" <> ToString[Rtuple[[1]]] <> "_"<> ToString[Rtuple[[2]]] ;
 
 	<< Total.m
 ];
