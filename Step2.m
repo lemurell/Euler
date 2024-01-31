@@ -52,6 +52,7 @@ While[Rlist[[row+1,2]]!=Rlist[[1,2]],
 col=Length[Rlist]/row;
 Rstep1=-Rlist[[1,1]]+Rlist[[1+row,1]];
 Rstep2=-Rlist[[1,2]]+Rlist[[2,2]];
+Rstep = Min[Rstep1, Rstep2];
 margin=1/5;
 noConvergence={};
 allTogList =  {};
@@ -87,6 +88,7 @@ While[Rlist[[1+col*row,2]]!=Rlist[[1,2]],
 ];
 third=Length[Rlist]/row/col;
 RstepListLocal={-Rlist[[1,1]]+Rlist[[1+row*col,1]],-Rlist[[1,2]]+Rlist[[1+row,2]],-Rlist[[1,3]]+Rlist[[2,3]]};
+Rstep = Min[RstepListLocal];
 margin=1/5;
 noConvergence={};
 allTogList =  {};
@@ -111,11 +113,11 @@ For[i=1,i<third,i++,
 	];
 ];
 ];
-(*Print[RstepList, " " , RstepListLocal];*)
+Print["Rstep: " , Rstep];
 
 
 tv=Sort[allTogList];
-sameLimit= 1/100;
+sameLimit= Rstep;
 Print["CandList1: ", {Length[tv],tv}];
 For[j=1,j < Length[tv],j++,
 	k = j + 1;
@@ -201,7 +203,7 @@ Print["Nr in RunAgain: ", Length[runAgain]];
 candidates={};
 candStartV={};
 candRMargin = {};
-sameLimit= 1/100;
+sameLimit= Rstep / 2;
 For[k=1,k<=Length[runAgain],k++,
 	j = 1;
 	While[j <= Length[candidates] + 1,
@@ -230,7 +232,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
 (* Parameters  *)
  RstepStart = RstepStart/10000;
  Rlimit = Rlimit;
- ZoomSteps = 4;
+ ZoomSteps = 2;
  TRUNCDIGITSstart = TRUNCDIGITSstart + 6;
  NLmethod = "Secant";
  nrOfRuns = 5;
