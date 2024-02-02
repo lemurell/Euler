@@ -12,6 +12,8 @@ maxPower = 4;
 Ltype = "GL3";
 *)
 
+{CurrentStep,CurrentIndex2,CurrentIndex1,CurrentIndex3} = Get[fileNameBase <> "StateData.m"];
+
 (* Global precision parameters. *)
 PRECISIONMULTIPLE = 5;
 TRUNCDIGITS=7;
@@ -157,7 +159,7 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
  Print[TimeUsed[]-st, Nlist];
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV,PRECISIONMULTIPLE TRUNCDIGITSstart];
- For[Rloop=1,Rloop<=Length[RstartList],Rloop++,
+ For[Rloop=CurrentIndex2,Rloop<=Length[RstartList],Rloop++,
     fileName=fileNameBase <> "Zoom" <> ToString[Rloop];
     Rinit=RstartList[[Rloop]];
 	If[Length[startValueList]>=Rloop && Length[startValueList[[Rloop]]]>0,
@@ -172,12 +174,21 @@ Save[fileNameBase <> "Candidates.txt", candStep2];
     ,
         saveCandidate[fileNameBase <> "Fail",answer];
     ];
+	Put[{CurrentStep,Rloop+1,CurrentIndex1,CurrentIndex3},fileNameBase <> "StateData.m"];
  ];
+
+If[CurrentStep == 2,
+	CurrentStep = 3;
+	CurrentIndex2 = Rloop+1;
+	CurrentIndex3 = 1;
+	Put[{CurrentStep,CurrentIndex2,CurrentIndex1, CurrentIndex3},fileNameBase <> "StateData.m"];
+];
 
 TimeStep2 = (TimeUsed[]-st)/60;
 Save[fileNameBase <> "Time.txt", TimeStep2];
 st=TimeUsed[];
  
+{CurrentStep,CurrentIndex2,CurrentIndex1, CurrentIndex3} = Get[fileNameBase <> "StateData.m"];
 
 
 
@@ -247,7 +258,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
  sameNN = False;
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITSstart];
  startValueList = SetPrecision[candStartV,PRECISIONMULTIPLE TRUNCDIGITSstart];
- For[Rloop=1,Rloop<=Length[RstartList],Rloop++,
+ For[Rloop=CurrentIndex3,Rloop<=Length[RstartList],Rloop++,
     fileName=fileNameBase <> "Zoom" <> ToString[Rloop];
     Rinit=RstartList[[Rloop]];
 	If[Length[startValueList]>=Rloop,
@@ -262,6 +273,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
     ,
         saveCandidate[fileNameBase <> "Fail",answer];
     ];
+	Put[{CurrentStep,CurrentIndex2,CurrentIndex1, Rloop1+1},fileNameBase <> "StateData.m"];
  ];
 
 TimeStep3 = (TimeUsed[]-st)/60;

@@ -109,7 +109,7 @@ Save[fileNameBase ,{DIGITS, PRECISION, TRUNCDIGITS, Ldata, Rlist, g, Param, slis
 
 RowLength = (sideCounts[[2]] + 1)(sideCounts[[3]] + 1);
 If[FileType[ fileNameBase <> "StateData.m"]==File,
-	{CurrentStep,lastRowStartValues,RloopStart} = Get[fileNameBase <> "StateData.m"];
+	{CurrentStep,lastRowStartValues,RloopStart,CurrentIndex3} = Get[fileNameBase <> "StateData.m"];
 ,
 	Print["Shouldn't happen!"];
 	Break;
@@ -160,9 +160,15 @@ For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
 
     Save[fileNameBase,result];
     Clear[result];
-	Put[{CurrentStep,lastRowStartValues,Rloop+1},fileNameBase <> "StateData.m"];
+	Put[{CurrentStep,lastRowStartValues,Rloop+1,1},fileNameBase <> "StateData.m"];
 ];
-DeleteFile[fileNameBase <> "StateData.m"];
+
+If[CurrentStep == 1,
+	CurrentStep = 2;
+	CurrentIndex1 = Rloop+1;
+	CurrentIndex2 = 1;
+	Put[{CurrentStep,CurrentIndex2,CurrentIndex1,1},fileNameBase <> "StateData.m"];
+];
 
 TimeStep1 = (TimeUsed[]-st)/60;
 Save[fileNameBase <> "Time.txt", TimeStep1];
