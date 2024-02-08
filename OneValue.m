@@ -4,14 +4,14 @@
 Clear[result];
 
 (* Parameters to initiate before calling *)
- Ltype = "HoloxMaass";
- level = 1;
+ Ltype = "GL3";
+ level = 4;
  charvalue = "No";
- parity = {1,12};
- OMEGA = -1;
+ parity = {1, 1, 0};
+ OMEGA = {1/2, -Sqrt[3]/2};
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
- realOrImaginary = 1;
- coefLimit = 4;
+ realOrImaginary = 0;
+ coefLimit = 3;
  PRECISIONMULTIPLE = 5;
  TRUNCDIGITS = 6;
  startValuePrec = 4;
@@ -20,12 +20,16 @@ Clear[result];
  nrOfRuns = 100;
  MaxSolutions = 1;
  startNN= 30;
+ minWidth = 40;
+ minMult = 1/200;
  maxPower = 4;
+ unknownsAtStart = 0;
  nrOfExtraEquations = 1;
+ extraEq = {bb1[2] + 1/4};
  startValues = {}; 
  knownCoef = {{2, 1.04846245223460506080-0.375239638871383270 I }};
  knownCoef = {};
- fileName = "Runs/Test/HoloxMaassNewTest.txt"
+ fileName = "Runs/NewOMEGA_GL3Level4_c1_110.txt"
  
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITS];
  startValueList = SetPrecision[candStartV, PRECISIONMULTIPLE TRUNCDIGITS];
@@ -59,7 +63,7 @@ llist = getLlist[Ltype, Rtuple, parity];
 		logQlogN = Table[logQ-Log[n],{n,1,1000}];
 
         (* Local testfunction parameters. *)
-		{NN, sSeq, paraSeq} = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,startNN,minMult,realOrImaginary];
+		{NN, sSeq, paraSeq} = getFuncEqParameters[{1,0},klist,llist,reslist,polelist,Param,v,minWidth,startNN,minMult,realOrImaginary];
 		{plist, highplist, nonplist, knownlist} = getUnknowns[Ldata, NN ,maxPower, knownCoef];
 		stillUnknowns = Union[plist,highplist];
 		nrOfUnknowns = (2-Abs[realOrImaginary]) Length[stillUnknowns];
@@ -74,7 +78,7 @@ llist = getLlist[Ltype, Rtuple, parity];
         expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
 
         llist = getLlist[Ltype, Rtuple, parity];
-		result[Rtuple]=solveForOneByStep[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, unknownsAtStart,realOrImaginary];
+		result[Rtuple]=solveForOneByStep[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, unknownsAtStart,realOrImaginary,extraEq];
 
         Save[fileName,result];
 		Clear[result];
