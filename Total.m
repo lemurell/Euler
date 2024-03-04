@@ -71,7 +71,7 @@ Print[TimeUsed[]-st, Nlist];
 
 If[testfunctiontypeSweep == "Classic",
 	Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
-	{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,initNN,minMult,realOrImaginary];
+	{NN, sSeq, paraSeq}  = getFuncEqParameters[{1,0},klist,llist,reslist,polelist,Param,v,minWidth,initNN,minMult,realOrImaginary];
 ,
 	NN = Nlist[[TRUNCDIGITS]];
 ];
@@ -121,6 +121,7 @@ If[FileType[ fileNameBase <> "StateData.m"]==File,
 For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
     Rtuple = Rlist[[Rloop]];
     llist = getLlist[Ltype, Rtuple, parity];
+    phaseFactor = getPhaseFactor[Ltype, Rtuple];
 
 	firstIndex = Mod[Rloop,RowLength];
 	If[firstIndex == 0, 
@@ -150,7 +151,7 @@ For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
 		];
 	];
 
-    result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary];
+    result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary];
 	
     If[Rloop==1,
         Save[fileNameBase <> "Matrix", fullmatrix];

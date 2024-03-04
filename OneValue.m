@@ -8,7 +8,8 @@ Clear[result];
  level = 4;
  charvalue = "No";
  parity = {1, 1, 0};
- OMEGA = {1/2, -Sqrt[3]/2};
+ OMEGA = {epsR, epsC};
+ OMEGA = {-1, 0};
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
  realOrImaginary = 0;
  coefLimit = 3;
@@ -24,8 +25,9 @@ Clear[result];
  minMult = 1/200;
  maxPower = 4;
  unknownsAtStart = 0;
- nrOfExtraEquations = 1;
- extraEq = {bb1[2] + 1/4};
+ nrOfExtraEquations = 5;
+ extraEq = {2 bb1[2] + epsR, 2 bb2[2] + epsC};
+ extraEq = {};
  startValues = {}; 
  knownCoef = {{2, 1.04846245223460506080-0.375239638871383270 I }};
  knownCoef = {};
@@ -78,10 +80,10 @@ llist = getLlist[Ltype, Rtuple, parity];
         expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
 
         llist = getLlist[Ltype, Rtuple, parity];
-		result[Rtuple]=solveForOneByStep[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, unknownsAtStart,realOrImaginary,extraEq];
+		result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary,extraEq];
 
         Save[fileName,result];
-		Clear[result];
+		(*Clear[result];*)
  ]
 
 

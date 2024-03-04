@@ -11,7 +11,7 @@ Clear[result];
  Ltype = "GL3";
  level = 1;
  charvalue = 1;
- OMEGA = 1;
+ OMEGA = {1, 0};
  parity = 0;
  Ldata = {Ltype, level, charvalues, OMEGA, parity};
  realOrImaginary = 0;
@@ -79,7 +79,7 @@ llist = getLlist[Ltype, Rinit, parity];
 
 		If[testfunctiontypeZoom == "Classic",
 			Param=Table[{1/25,2/5+(i-1)2/5,0},{i,2}];
-			{NN, sSeq, paraSeq}  = getFuncEqParameters[1,klist,llist,reslist,polelist,Param,v,minWidth,NN,minMult,realOrImaginary];
+			{NN, sSeq, paraSeq}  = getFuncEqParameters[{1, 0}, klist,llist,reslist,polelist,Param,v,minWidth,NN,minMult,realOrImaginary];
 		,
 			NN = Nlist[[TRUNCDIGITS]];
 		];
@@ -102,6 +102,7 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
         expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
 
         llist = getLlist[Ltype, Rtuple, parity];
+	    phaseFactor = getPhaseFactor[Ltype, Rtuple];
         
 		Catch[ 	
 			Rlist = {Rtuple};	  
@@ -111,7 +112,8 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 			
 			For[k=1, k<=getNrOfParameters[Ltype] + 1, k++,
                 llist = getLlist[Ltype, Rlist[[k]], parity];
-				result[Rlist[[k]]] = solveForOneNL[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary];
+                phaseFactor = getPhaseFactor[Ltype, Rlist[[k]]];
+				result[Rlist[[k]]] = solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary];
 				If[Length[result[Rlist[[k]]][[1]]]==0,
 					zoomloop=ZoomSteps;
 					success = False;

@@ -4,32 +4,35 @@ addEquations[intpart_, polepart_, realOrImaginary_:0, OMEGA_:{1, 0}]:=Module[{re
     answer={};
 	maxAbs = Max[Abs[intpart]];
     For[i=1,i<Length[polepart],i++,
-	If[realOrImaginary == 0 || OMEGA != {-1, 0},
-	    realRow = Re[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) - OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
-	    realRow[[1]] = realRow[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
+		If[realOrImaginary == 0,
+		    realRow = Re[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) - OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
+		    realRow[[1]] = realRow[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
+		    imagRow = Im[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Im[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Re[intpart[[1,2]] - intpart[[i+1,2]]]);
+		    imagRow[[1]] = imagRow[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
+		    realRow2 = Re[intpart[[1,1]] - intpart[[i+1,1]]] - OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
+		    realRow2[[1]] = realRow2[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
+		    imagRow2 = Im[-intpart[[1,1]] + intpart[[i+1,1]]] + OMEGA[[1]](Im[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Re[intpart[[1,2]] - intpart[[i+1,2]]]);
+		    imagRow2[[1]] = imagRow2[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
+		,
+			If[OMEGA == {-1, 0},
+		        realRow = Im[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Im[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Re[intpart[[1,2]] - intpart[[i+1,2]]]);
+		        realRow[[1]] = imagRow[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
+		    ,
+			    realRow = Re[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) - OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
+			    realRow[[1]] = realRow[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
+		    ,
+			    realRow = Re[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) - OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
+			    realRow[[1]] = realRow[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
+			];
+		];
+        If[realOrImaginary == 1,
+	       AppendTo[answer, realRow];
+	    ,
+	       AppendTo[answer, alternateLists[realRow, imagRow2]];
+	       AppendTo[answer, alternateLists[imagRow, realRow2]];
+		];
 	];
-	If[realOrImaginary == 0 || OMEGA == {-1, 0},
-	    imagRow = Im[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Im[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Re[intpart[[1,2]] - intpart[[i+1,2]]]);
-	    imagRow[[1]] = imagRow[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
-	];
-	If[realOrImaginary == 0,
-	    realRow2 = Re[intpart[[1,1]] - intpart[[i+1,1]]] - OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
-	    realRow2[[1]] = realRow2[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
-	    imagRow2 = Im[-intpart[[1,1]] + intpart[[i+1,1]]] + OMEGA[[1]](Im[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Re[intpart[[1,2]] - intpart[[i+1,2]]]);
-	    imagRow2[[1]] = imagRow2[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
-	];
-        Switch[realOrImaginary,
-	       1,
-			   If[OMEGA=={-1, 0},
-	                AppendTo[answer, imagRow];
-				,
-	                AppendTo[answer, realRow];
-				];
-	       ,0,
-	           AppendTo[answer, alternateLists[realRow, imagRow2]];
-	           AppendTo[answer, alternateLists[imagRow, realRow2]];
-	];
-    ];
+
     answer/maxAbs
  ]
 
@@ -244,7 +247,7 @@ computeL[s_,coeflist_,Q_,w_,klist_,llist_,reslist_,polelist_,A_,truncdigits_,v_ 
 		                      {i,1,Length[klist]}]
 ]
 
-computeEquationMatrix[Ldata_,klist_,llist_,reslist_,polelist_,slist_, paralist_,Param_,NN_,M_,incr_,v_,expz_,realOrImaginary_:0]:=Module[{OMEGA,errorSize,sloop,s,exps1,exps2,n,gamma1,gamma2,i,j,k,Aloop,glist1,glist2,answer,polepart,matrixrows,locParam},
+computeEquationMatrix[Ldata_,klist_,llist_,reslist_,polelist_,phaseFactor_,slist_, paralist_,Param_,NN_,M_,incr_,v_,expz_,realOrImaginary_:0]:=Module[{OMEGA,errorSize,sloop,s,exps1,exps2,n,gamma1,gamma2,i,j,k,Aloop,glist1,glist2,answer,polepart,matrixrows,locParam},
 (*st=TimeUsed[];
 Print["This is version 2.99 and the level is: ", level];*)
 	OMEGA = Ldata[[4]];
@@ -265,10 +268,10 @@ Print["This is version 2.99 and the level is: ", level];*)
             glist1=Table[ N[g[s+v+I*k , locParam[[Aloop]], s],PRECISION],{k,-M,M,incr}];
             glist2=Table[ N[g[s-v-I*k , locParam[[Aloop]], s],PRECISION],{k,-M,M,incr}];
 
-            answer[[Aloop]]= {incr * Table[ 
+            answer[[Aloop]]= {N[phaseFactor] * incr * Table[ 
                       exps1[[n]] * Sum[
                         gamma1[[k]] * glist1[[k]] * expz[[n,k]], {k,1,Length[gamma1]}] ,{n,NN}]/2/Pi, 
-                        incr * Table[ exps2[[n]] *  Sum[gamma2[[k]] * glist2[[k]] * expz[[n,k]],
+                        Conjugate[N[phaseFactor]] * incr * Table[ exps2[[n]] *  Sum[gamma2[[k]] * glist2[[k]] * expz[[n,k]],
                     {k,1,Length[gamma1]}] ,{n,NN}] / 2/Pi};
 
             polepart[[Aloop]]=Sum[reslist[[i]] * g[polelist[[i]],locParam[[Aloop]], s]/(s-polelist[[i]]),{i,Length[polelist]}];
@@ -280,7 +283,7 @@ Print["This is version 2.99 and the level is: ", level];*)
             AppendTo[fullmatrix, matrixrows[[j]]];
         ];
     ];
-Print["Smallest element: ", Max[Abs[fullmatrix[[All,-1]]]]];
+(* Print["Smallest element: ", Max[Abs[fullmatrix[[All,-1]]]]];*)
 	fullmatrix
 ]
 
@@ -1184,6 +1187,9 @@ getNumberOfCoefficients[OMEGA_,klist_,llist_,parity_,v_,bwidth_:2,quadfact_:0, m
 	,
 		significantrow = matrixrows[[1]];
 		precisonrow = matrixrows[[2]];
+	,
+		significantrow = matrixrows[[1]];
+		precisonrow = matrixrows[[2]];
 	];
 	Print["Precision: ", Max[Abs[precisonrow[[{-2,-1}]]]]];
 	Print["Max truncation: ", Max[Abs[significantrow[[{-2,-1}]]]]];
@@ -1251,6 +1257,13 @@ getParameterListIndex[param_,list_,prec_:7]:=Module[{k, ans},
 	ans
 ]
 
+getPhaseFactor[Ltype_, param_]:=
+	If[Ltype == "GL3Holo",
+		2^(I*param[[1]])
+	,
+		1
+	]
+	
 getRstep[Ltype_,step_]:= Table[step,{i,getNrOfParameters[Ltype]}]
 
 getRtuple[Ltype_,Rtuple_, RstepList_, iter_]:=
@@ -1711,17 +1724,18 @@ the x-axis.
 -------------------------------------------------------------------*)
 secantzero[x1_,x2_,y1_,y2_]:=(x1 y2-x2 y1)/(y2-y1)
 
-solveForOneNL[Ldata_,klist_,llist_,reslist_,polelist_,slist_, paralist_,Param_,nrOfRuns_,NN_,M_,incr_,v_,expz_,startValues_:{},knownCoef_:{},maxPower_:4,NLmethod_:"Secant",MaxSolutions_:Infinity, startValuePrec_:0,realOrImaginary_:0, extraEq_:{}]:=Module[{errorSize,allSol, aplist,errorList,answer},
-    fullmatrix = computeEquationMatrix[Ldata,klist,llist,reslist,polelist,slist, paralist,Param,NN,M,incr,v,expz,realOrImaginary];
+solveForOneNL[Ldata_,klist_,llist_,reslist_,polelist_,phaseFactor_,slist_, paralist_,Param_,nrOfRuns_,NN_,M_,incr_,v_,expz_,startValues_:{},knownCoef_:{},maxPower_:4,NLmethod_:"Secant",MaxSolutions_:Infinity, startValuePrec_:0,realOrImaginary_:0, extraEq_:{}]:=Module[{errorSize,allSol, aplist,errorList,answer},
+    fullmatrix = computeEquationMatrix[Ldata,klist,llist,reslist,polelist,phaseFactor,slist, paralist,Param,NN,M,incr,v,expz,realOrImaginary];
+Print["Time: ", TimeUsed[]-st];
 	{allSol, aplist,errorList}=solveNL[Ldata,fullmatrix,nrOfRuns,startValues,knownCoef,maxPower,NLmethod,MaxSolutions, startValuePrec,realOrImaginary,extraEq];
-(*Print["Time: ", TimeUsed[]-st];*)
+Print["Time: ", TimeUsed[]-st];
 	errorSize = Table[Norm[errorList[[k]]],{k,Length[errorList]}];
     Print[ " Rtuple: ", N[Im[llist]], "  ap:  ", N[aplist,4],  "  Errorsize:  ", N[errorSize,3]];
 
    {allSol, aplist,errorList}
 ]
 
-solveForOneByStep[Ldata_,klist_,llist_,reslist_,polelist_,slist_, paralist_,Param_,nrOfRuns_,NN_,M_,incr_,v_,expz_,startValues_:{},knownCoef_:{},maxPower_:4,NLmethod_:"Secant",MaxSolutions_:Infinity, startValuePrec_:0,unknownsAtStart_:0,realOrImaginary_:0, extraEq_:{}]:=Module[{fullmatrix,errorSize,allSol, aplist,errorList,answer, unknownsPresent, nrOfCoef, nrOfEquations, plist, highplist, nonplist, knownlist, stillUnknowns, locstartValues},
+solveForOneByStep[Ldata_,klist_,llist_,reslist_,polelist_,phaseFactor_,slist_, paralist_,Param_,nrOfRuns_,NN_,M_,incr_,v_,expz_,startValues_:{},knownCoef_:{},maxPower_:4,NLmethod_:"Secant",MaxSolutions_:Infinity, startValuePrec_:0,unknownsAtStart_:0,realOrImaginary_:0, extraEq_:{}]:=Module[{errorSize,allSol, aplist,errorList,answer, unknownsPresent, nrOfCoef, nrOfEquations, plist, highplist, nonplist, knownlist, stillUnknowns, locstartValues},
     fullmatrix = computeEquationMatrix[Ldata,klist,llist,reslist,polelist,slist, paralist,Param,NN,M,incr,v,expz,realOrImaginary];
 	locstartValues = startValues;
 	nrOfCoef=Length[fullmatrix[[1]]]/(2-Abs[realOrImaginary]);
@@ -1751,8 +1765,13 @@ solveForOneByStep[Ldata_,klist_,llist_,reslist_,polelist_,slist_, paralist_,Para
    {allSol, aplist,errorList}
 ]
 
-solveNL[Ldata_,fullmatrix_,nrOfRuns_,startValues_:{},knownCoef_:{},maxPower_:4,NLmethod_:"Secant",MaxSolutions_:Infinity, startValuePrec_:0,realOrImaginary_:0, extraEq_:{}]:=Module[{stepVector, interpolLine, maxStep, locStartValues, nrOfSolutions, locStart, nrOfEquations,eqnsInCheck,allEqns,errorList,checkEqns,eqnsInSystem,stepFactor,normError,nr,start,sol,aplist,allSol,j,k,eqns,stillUnknowns,heckeCond,highplist,nonplist,plist,knownlist,unknowns,nrOfCoef,realUnknowns,imagUnknowns,OMEGA,extraGoal,idx,place,allUnknowns,placesToRemove,pos,myStartValues},
+solveNL[Ldata_,fullmatrix_,nrOfRuns_,startValues_:{},knownCoef_:{},maxPower_:4,NLmethod_:"Secant",MaxSolutions_:Infinity, startValuePrec_:0,realOrImaginary_:0, extraEq_:{}]:=Module[{nrOfSignParam, stepVector, interpolLine, maxStep, locStartValues, nrOfSolutions, locStart, nrOfEquations,eqnsInCheck,allEqns,errorList,checkEqns,eqnsInSystem,stepFactor,normError,nr,start,sol,aplist,allSol,j,k,eqns,stillUnknowns,heckeCond,highplist,nonplist,plist,knownlist,unknowns,nrOfCoef,realUnknowns,imagUnknowns,OMEGA,extraGoal,idx,place,allUnknowns,placesToRemove,pos,myStartValues},
 	OMEGA = Ldata[[4]];
+	If[NumberQ[N[OMEGA[[1]]]] && NumberQ[N[OMEGA[[2]]]],
+		nrOfSignParam = 0;
+	,
+		nrOfSignParam=2;
+	];
 	myStartValues = startValues;
 	nrOfCoef=Length[fullmatrix[[1]]]/(2-Abs[realOrImaginary]);
 	nrOfEquations=Length[fullmatrix]/(2-Abs[realOrImaginary]);
@@ -1760,7 +1779,7 @@ solveNL[Ldata_,fullmatrix_,nrOfRuns_,startValues_:{},knownCoef_:{},maxPower_:4,N
 	allUnknowns=Union[plist,highplist];
 	{plist, highplist, nonplist, knownlist} = getUnknowns[Ldata,nrOfCoef,maxPower, knownCoef];
 	stillUnknowns=Union[plist,highplist];
-	stepFactor = nrOfEquations / ((2-Abs[realOrImaginary]) Length[stillUnknowns] - Length[extraEq]);
+	stepFactor = nrOfEquations / ((2-Abs[realOrImaginary]) Length[stillUnknowns] - Length[extraEq] + nrOfSignParam);
 	extraGoal = 2;
 	Switch[realOrImaginary,
 	0,
@@ -1824,10 +1843,12 @@ solveNL[Ldata_,fullmatrix_,nrOfRuns_,startValues_:{},knownCoef_:{},maxPower_:4,N
 		allEqns=ReplaceRepeated[fullmatrix[[Table[(2-Abs[realOrImaginary]) * k,{k,nrOfEquations}],Range[1,(2-Abs[realOrImaginary]) nrOfCoef]]] . unknowns , heckeCond];
 	,
 		allEqns=ReplaceRepeated[fullmatrix[[Table[(2-Abs[realOrImaginary]) * k-1 + Abs[realOrImaginary],{k,nrOfEquations}],Range[1,(2-Abs[realOrImaginary]) nrOfCoef]]] . unknowns , heckeCond];
+	,
+		allEqns=ReplaceRepeated[fullmatrix[[Table[(2-Abs[realOrImaginary]) * k-1 + Abs[realOrImaginary],{k,nrOfEquations}],Range[1,(2-Abs[realOrImaginary]) nrOfCoef]]] . unknowns , heckeCond];
 	];
-(*Print[allEqns[[{1,2}]]];*)
+Print[Dimensions[allEqns]];
 	eqnsInSystem = Table[Floor[k],{k,1,nrOfEquations,stepFactor}];
-(*Print[eqnsInSystem, " ",stepFactor, " ", nrOfEquations];*)
+Print[eqnsInSystem, " ",stepFactor, " ", nrOfEquations];
 	eqnsInCheck = Complement[Table[k,{k,nrOfEquations}],eqnsInSystem];
 	eqns=allEqns[[eqnsInSystem]];
 	eqns = Join[eqns, extraEq];
@@ -1880,11 +1901,20 @@ solveNL[Ldata_,fullmatrix_,nrOfRuns_,startValues_:{},knownCoef_:{},maxPower_:4,N
 				start=Table[{unknowns[[stillUnknowns[[k]]]],SetPrecision[2 Random[]-1, PRECISION]},{k,Length[stillUnknowns]}];
 			];
 		];
-iter=0;
-eval=0;
+		iter=0;
+		eval=0;
+		If[nrOfSignParam == 2,
+			If[Length[start[[1]]]==2,
+				AppendTo[start, {OMEGA[[1]], 1}];
+				AppendTo[start, {OMEGA[[2]], 0}];
+			,
+				AppendTo[start, {OMEGA[[1]], -1, 1}];
+				AppendTo[start, {OMEGA[[2]], -1, 1}];
+			];
+		];
 (*Print[start];
 Print["Still unknowns: ",stillUnknowns];
-Print["Antal eqn: ",Length[eqns],"  ",eqns[[1]],eqns[[-1]]];*)
+Print["Antal eqn: ",Length[eqns],"  ",eqns[[-1]]];*)
 		sol=FindRoot[eqns, start,  WorkingPrecision->PRECISION, AccuracyGoal->TRUNCDIGITS + extraGoal, PrecisionGoal->TRUNCDIGITS + extraGoal, Method -> NLmethod, StepMonitor:>iter++,EvaluationMonitor:>eval++];
 (*Print["Iterationer: ", iter, " Evaluations: ", eval];*)
 		normError=Norm[eqns /. sol];
