@@ -551,6 +551,11 @@ getArchiveFileName[Ldata_,archiveFileType_]:=Module[{Ltype, level, OMEGA, target
 			listFile ="GL3HoloFinal/GL3Holo_All.txt";
 			listFilePart ="GL3HoloFinal/GL3Holo_AllPart.txt";
 			listFileAgain ="GL3HoloFinal/GL3Holo_AllAgain.txt";
+	,"GL4Holo",
+			targetFileBase = "GL4HoloFinal/GL4Holo_Maass";
+			listFile ="GL4HoloFinal/GL4Holo_All.txt";
+			listFilePart ="GL4HoloFinal/GL4Holo_AllPart.txt";
+			listFileAgain ="GL4HoloFinal/GL4Holo_AllAgain.txt";
 	,"GL4",
 			targetFileBase = "GL4Final/GL4_Maass";
 			listFile ="GL4Final/GL4_All.txt";
@@ -654,6 +659,8 @@ getDegree[Ltype_]:=
 		3
 	,"GL3Holo",
 		3
+	,"GL4Holo",
+		4
 	,"SiegelPara",
 		4
 	,"SiegelSpin",
@@ -1107,7 +1114,9 @@ getKlist[Ltype_]:=Module[{},
 	,"GL3",
 		{1/2,1/2,1/2}
 	,"GL3Holo",
-		{1,1/2}
+		{1/2, 1/2, 1/2}
+	,"GL4Holo",
+		{1/2, 1/2, 1/2, 1/2}
 	,"SiegelSpin",
 		{1,1}
 	,"SiegelPara",
@@ -1134,7 +1143,9 @@ getLlist[Ltype_,param_,parity_:{}]:=Module[{},
 	,"GL3",
 		{I*param[[1]]+ parity[[1]]/2, I*param[[2]]+ parity[[1]]/2, -I*(param[[1]]+param[[2]])}
 	,"GL3Holo",
-		{(parity[[2]]-1)/2-I*param[[1]], I*param[[1]]+parity[[1]]/2}
+		{(parity[[2]]-1)/4-I*param[[1]]/2,(parity[[2]]+1)/4-I*param[[1]]/2, I*param[[1]]+parity[[1]]/2}
+	,"GL4Holo",
+		{(parity[[3]]-1)/4-I*(param[[1]]+param[[2]])/2,(parity[[3]]+1)/4-I*(param[[1]]+param[[2]])/2, I*param[[1]]+parity[[1]]/2, I*param[[2]]+parity[[2]]/2}
 	,"SiegelPara",
 		{1/2,1/2}
 	,"SiegelSpin",
@@ -1226,6 +1237,8 @@ getNrOfParameters[Ltype_]:=
 		2
 	,"GL3Holo",
 		1
+	,"GL4Holo",
+		2
 	,"SiegelPara",
 		1
 	,"SiegelSpin",
@@ -1259,7 +1272,7 @@ getParameterListIndex[param_,list_,prec_:7]:=Module[{k, ans},
 
 getPhaseFactor[Ltype_, param_]:=
 	If[Ltype == "GL3Holo",
-		2^(I*param[[1]])
+		1
 	,
 		1
 	]
@@ -1504,6 +1517,8 @@ QValue[Ltype_,level_]:=Module[{},
 		Sqrt[level]/Pi^(3/2)
 	,"GL3Holo",
 		Sqrt[level]/Pi^(3/2)
+	,"GL4Holo",
+		Sqrt[level]/Pi^2
 	,"SiegelPara",
 		Sqrt[level]/4/Pi^2
 	,"SiegelSpin",
@@ -2031,6 +2046,10 @@ writeAllToLcalc[Ldata_]:=Module[{locLdata, targetFolder, eigenvalueFile, lcalcBa
 			targetFolder = "Publish/GL3Holo/";
 			eigenvalueFile = targetFolder <> "EigenvalueList.txt";
 			lcalcBase = targetFolder <> "Lcalc/GL3Holo";
+	,"GL4Holo",
+			targetFolder = "Publish/GL4Holo/";
+			eigenvalueFile = targetFolder <> "EigenvalueList.txt";
+			lcalcBase = targetFolder <> "Lcalc/GL4Holo";
 	,"SP6",
 			targetFolder = "Publish/SP6/";
 			eigenvalueFile = targetFolder <> "EigenvalueList.txt";

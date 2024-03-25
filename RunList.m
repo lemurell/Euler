@@ -4,23 +4,24 @@
 Clear[result];
 
 (* Parameters to initiate before calling *)
- Ltype = "SP4";
+ Ltype = "GL4Holo";
  level = 1;
  charvalue = "No";
  (* parity = {OddOrEven, weight};
  OMEGA = (-1)^OddOrEven * I^weight;*)
- OMEGA = (-1)^(parity[[1]]+parity[[2]]);
+ OMEGA = I^(Sum[parity[[i]], {i,Length[parity]}]);
+ OMEGA = {Re[OMEGA], Im[OMEGA]};
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
- realOrImaginary = 1;
+ realOrImaginary = 0;
  coefLimit = 4;
  RstepStart = getRstep[Ltype, 1/10^5];
  (*RstepStart = {10^(-7),10^(-6),10^(-4)};*)
  Rlimit = 1/100;
  Rinit = candidates[[-1]];
- ZoomSteps = 5;
- EndPrecision = 6;
- PRECISIONMULTIPLE = 5;
- TRUNCDIGITSstart = 11;
+ ZoomSteps = 4;
+ EndPrecision = 8;
+ PRECISIONMULTIPLE = 4;
+ TRUNCDIGITSstart = 7;
  PRECISION= Max[PRECISIONMULTIPLE * TRUNCDIGITSstart, MachinePrecision];
  SDIFF = 1/3;
  NLmethod = "Secant";
@@ -28,8 +29,10 @@ Clear[result];
  MaxSolutions = 1;
  sameNN = False;
  useSameTruncation = False;
- testfunctiontypeZoom = "DS";
+ testfunctiontypeZoom = "Classic";
  v=2;
+ minWidth = 50 / (realOrImaginary + 1);
+ minMult = 1/200;
  bwidth = 2;
  Mfactor = 7;
  klist = getKlist[Ltype];

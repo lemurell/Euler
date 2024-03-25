@@ -4,12 +4,12 @@
 Clear[result];
 
 (* Parameters to initiate before calling *)
- Ltype = "GL3";
- level = 4;
+ Ltype = "GL4Holo";
+ level = 1;
  charvalue = "No";
- parity = {1, 1, 0};
+ parity = {0, 0, 4};
  OMEGA = {epsR, epsC};
- OMEGA = {-1, 0};
+ OMEGA = {1, 0};
  Ldata = {Ltype, level, charvalue, OMEGA, parity};
  realOrImaginary = 0;
  coefLimit = 3;
@@ -31,7 +31,7 @@ Clear[result];
  startValues = {}; 
  knownCoef = {{2, 1.04846245223460506080-0.375239638871383270 I }};
  knownCoef = {};
- fileName = "Runs/NewOMEGA_GL3Level4_c1_110.txt"
+ fileName = "Runs/Test_OneValueFistGL3.txt"
  
  RstartList=SetPrecision[candidates, PRECISIONMULTIPLE TRUNCDIGITS];
  startValueList = SetPrecision[candStartV, PRECISIONMULTIPLE TRUNCDIGITS];
@@ -80,7 +80,8 @@ llist = getLlist[Ltype, Rtuple, parity];
         expz=Table[Exp[(v+I*k)*logQlogN[[n]]]/(v+I*k),{n,1,NN},{k,-M,M,incr}];
 
         llist = getLlist[Ltype, Rtuple, parity];
-		result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary,extraEq];
+        phaseFactor = getPhaseFactor[Ltype, Rtuple];
+		result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary,extraEq];
 
         Save[fileName,result];
 		(*Clear[result];*)
