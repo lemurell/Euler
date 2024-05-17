@@ -16,7 +16,7 @@ addEquations[intpart_, polepart_, realOrImaginary_:0, OMEGA_:{1, 0}]:=Module[{re
 		,
 			If[OMEGA == {-1, 0},
 		        realRow = Im[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Im[intpart[[1,2]] - intpart[[i+1,2]]]) + OMEGA[[2]](Re[intpart[[1,2]] - intpart[[i+1,2]]]);
-		        realRow[[1]] = imagRow[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
+		        realRow[[1]] = realRow[[1]] + Im[polepart[[1]] - polepart[[i+1]]];
 		    ,
 			    realRow = Re[intpart[[1,1]] - intpart[[i+1,1]]] + OMEGA[[1]](Re[intpart[[1,2]] - intpart[[i+1,2]]]) - OMEGA[[2]](Im[intpart[[1,2]] - intpart[[i+1,2]]]);
 			    realRow[[1]] = realRow[[1]] + Re[polepart[[1]] - polepart[[i+1]]];
