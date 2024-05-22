@@ -273,7 +273,7 @@ Save[fileNameBase <> "Candidates.txt", candStep3];
     ,
         saveCandidate[fileNameBase <> "Fail",answer];
     ];
-	Put[{CurrentStep,CurrentIndex2,CurrentIndex1, Rloop1+1},StringDrop[fileNameBase,-2] <> "StateData.m"];
+	Put[{CurrentStep,CurrentIndex2,CurrentIndex1, Rloop+1},StringDrop[fileNameBase,-2] <> "StateData.m"];
  ];
 
 TimeStep3 = (TimeUsed[]-st)/60;
