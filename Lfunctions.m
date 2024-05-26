@@ -659,6 +659,8 @@ getDegree[Ltype_]:=
 		3
 	,"GL3Holo",
 		3
+	,"GL3SD",
+		3
 	,"GL4Holo",
 		4
 	,"SiegelPara",
@@ -1115,6 +1117,8 @@ getKlist[Ltype_]:=Module[{},
 		{1/2,1/2,1/2}
 	,"GL3Holo",
 		{1/2, 1/2, 1/2}
+	,"GL3SD",
+		{1/2,1/2,1/2}
 	,"GL4Holo",
 		{1/2, 1/2, 1/2, 1/2}
 	,"SiegelSpin",
@@ -1144,6 +1148,8 @@ getLlist[Ltype_,param_,parity_:{}]:=Module[{},
 		{I*param[[1]]+ parity[[1]]/2, I*param[[2]]+ parity[[1]]/2, -I*(param[[1]]+param[[2]])}
 	,"GL3Holo",
 		{(parity[[2]]-1)/4-I*param[[1]]/2,(parity[[2]]+1)/4-I*param[[1]]/2, I*param[[1]]+parity[[1]]/2}
+	,"GL3SD",
+		{(I*param[[1]] + parity[[1]])/2,  (-I*param[[1]]+ parity[[1]])/2, parity[[2]]/2}
 	,"GL4Holo",
 		{(parity[[3]]-1)/4-I*(param[[1]]+param[[2]])/2,(parity[[3]]+1)/4-I*(param[[1]]+param[[2]])/2, I*param[[1]]+parity[[1]]/2, I*param[[2]]+parity[[2]]/2}
 	,"SiegelPara",
@@ -1236,6 +1242,8 @@ getNrOfParameters[Ltype_]:=
 	,"GL3",
 		2
 	,"GL3Holo",
+		1
+	,"GL3SD",
 		1
 	,"GL4Holo",
 		2
@@ -1516,6 +1524,8 @@ QValue[Ltype_,level_]:=Module[{},
 	,"GL3",
 		Sqrt[level]/Pi^(3/2)
 	,"GL3Holo",
+		Sqrt[level]/Pi^(3/2)
+	,"GL3SD",
 		Sqrt[level]/Pi^(3/2)
 	,"GL4Holo",
 		Sqrt[level]/Pi^2
