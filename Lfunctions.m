@@ -837,7 +837,7 @@ Print["Length: ", sSeq[[-1]]-sSeq[[1]], "  Interval: ", sSeq[[1]], ",",  sSeq[[-
 ]
 
 
-getHeckeFactor[Ldata_,coef_,n_,RealPart_,isComplexPair_:True,maxPower_:4]:=Module[{Ltype,level,ch,fi, pp,k,p,r,a,b,c,d},
+getHeckeFactor[Ldata_,coef_,n_,RealPart_,isComplexPair_:True,maxPower_:4]:=Module[{Ltype,level,ch,fi, pp,k,p,r,a,b,c,d,chp},
 	Ltype = Ldata[[1]];
 	level = Ldata[[2]];
 	ch = Ldata[[3]];
@@ -872,63 +872,40 @@ getHeckeFactor[Ldata_,coef_,n_,RealPart_,isComplexPair_:True,maxPower_:4]:=Modul
 			];
 			Switch[getDegree[Ltype],
 			2,
+				If[level == 1,
+					chp = 1;
+				, If[GCD[p,level]>1,
+					chp = 0;
+				  ,
+					chp = ch[[Mod[p,level]]];
+				 ];
+				];
 				If[RealPart,
-					If[GCD[p,level]>1,
-							Switch[r,
-								1,
-									a
-								,2,
-									a^2-b^2
-								,3,
-(*Print["Is doing level: ",level];*)
-									a^3 - 3a b^2
-								,4,
-									a^4  - 6 a^2 b^2 + b^4 
-								, _,
-									coef[[2p^r-1]]
-								]
-					,
 						Switch[r,
 							1,
 								a
 							,2,
-								a^2-b^2-1
+								a^2-b^2-chp
 							,3,
-								a^3-2a-3a b^2
+								a^3-2a chp-3a b^2
 							,4,
-								1 -3 a^2+a^4 + 3 b^2 -6 a^2 b^2 + b^4
+								chp^2 -3 a^2 chp+a^4 + 3 b^2 chp -6 a^2 b^2 + b^4
 							, _,
 								coef[[2p^r-1]]
 						]
-					]
 				,
-					If[GCD[p,level]>1,
-							Switch[r,
-								1,
-									b
-								,2,
-									2 a b
-								,3,
-									3 a^2 b  - b^3
-								,4,
-									4 a^3 b - 4 a b^3 
-								, _,
-									coef[[2p^r]]
-							]
-					,
 						Switch[r,
 							1,
 								b
 							,2,
 								2a b
 							,3,
-								-b^3+3a^2b - 2b
+								-b^3+3a^2b - 2b chp
 							,4,
-								4 a^3 b - 4 a b^3 - 6 a b
+								4 a^3 b - 4 a b^3 - 6 a b chp
 							, _,
 								coef[[2p^r]]
 						]
-					]
 				]
 			,3,
 				If[RealPart,
@@ -1141,7 +1118,7 @@ getKlist[Ltype_]:=Module[{},
 getLlist[Ltype_,param_,parity_:{}]:=Module[{},
 	Switch[Ltype
 	,"Maass",
-		{(I*param[[1]] + parity[[1]])/2,  (-I*param[[1]]+ parity[[1]])/2}
+		{(I*param[[1]] + parity[[1]])/2,  (-I*param[[1]]+ parity[[2]])/2}
 	,"Holomorph",
 		{(param[[1]]-1)/2}
 	,"GL3",
@@ -1399,7 +1376,7 @@ getSlistDavid[nrOfEquations_,width_:2]:=Module[{up, slist, down, i, blist,contin
 ]
 
 
-getUnknowns[Ldata_,NN_,maxPower_,knownCoef_:{}]:=Module[{Ltype,plist, highplist, nonplist, knownlist, p, fi, charvalue, level},
+getUnknowns[Ldata_,NN_,maxPower_,knownCoef_:{}]:=Module[{Ltype,plist, highplist, nonplist, knownlist, p, fi, charvalue, level, x},
 	Ltype = Ldata[[1]];
 	level = Ldata[[2]];
 	charvalue = Ldata[[3]];
@@ -1413,7 +1390,7 @@ getUnknowns[Ldata_,NN_,maxPower_,knownCoef_:{}]:=Module[{Ltype,plist, highplist,
 			AppendTo[knownlist,p];
 		,
 			fi=FactorInteger[p];
-			If[(Length[fi]==1 && GCD[level,p]>1 &&  getDegree[Ltype]>3) || PrimeQ[p] || (PrimeQ[Sqrt[p]] && (getDegree[Ltype]>3 || (GCD[level,p]>1 && charvalue =="No"))) || (PrimeQ[p^(1/3)] && Ltype=="SP6") ,
+			If[(Length[fi]==1 && GCD[level,p]>1 &&  getDegree[Ltype]>3) || PrimeQ[p] || (PrimeQ[Sqrt[p]] && (getDegree[Ltype]>3 || (GCD[level,p]>1 && charvalue ==Table[DirichletCharacter[level, 1, x],{x,level-1}]))) || (PrimeQ[p^(1/3)] && Ltype=="SP6") ,
 				AppendTo[plist,p];
 			,
 				If[Length[fi]==1 && Max[fi[[All,2]]]>maxPower,
