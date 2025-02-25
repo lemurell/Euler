@@ -18,7 +18,7 @@ Clear[result];
  (*RstepStart = {10^(-7),10^(-6),10^(-4)};*)
  Rlimit = 1/100;
  Rinit = candidates[[-1]];
- ZoomSteps = 4;
+ ZoomSteps = 2;
  EndPrecision = 8;
  PRECISIONMULTIPLE = 4;
  TRUNCDIGITSstart = 7;

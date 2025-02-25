@@ -11,8 +11,10 @@ CurrentStep = 1;
 Ltype = "HoloxMaass";
 level = 1;
 charvalue = "No";
+extraEq = {bb1[level]^2+bb2[level]==1};
 parity = {1, weight};
-OMEGA = {RealPart, ImaginaryPart};
+Clear[ALPHA];
+OMEGA = {Cos[ALPHA], Sin[ALPHA]};
 realOrImaginary = 1;
 coefLimit = getDegree[Ltype];
 knownCoef = {};
@@ -66,7 +68,7 @@ bwidth = bwidthStart;
 nrOfExtraEquations = 8;
 SDIFF = 1/3;
 st = TimeUsed[];
-Nlist = getNumberOfCoefficients[OMEGA,klist,llist,parity,v,bwidth];
+Nlist = getNumberOfCoefficients[{1,0},klist,llist,parity,v,bwidth];
 Print[TimeUsed[]-st, Nlist];
 
 If[testfunctiontypeSweep == "Classic",
@@ -151,7 +153,7 @@ For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
 		];
 	];
 
-    result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary];
+    result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary,{}];
 	
     If[Rloop==1,
         Save[fileNameBase <> "Matrix", fullmatrix];
