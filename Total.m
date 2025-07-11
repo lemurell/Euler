@@ -153,7 +153,7 @@ For[Rloop = RloopStart,Rloop<=Length[Rlist],Rloop++,
 		];
 	];
 
-    result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary,{}];
+    result[Rtuple]=solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary,extraEq];
 	
     If[Rloop==1,
         Save[fileNameBase <> "Matrix", fullmatrix];

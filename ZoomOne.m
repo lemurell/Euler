@@ -12,6 +12,7 @@ Clear[result];
  level = 1;
  charvalue = 1;
  OMEGA = {1, 0};
+ extraEq = {bb1[level]^2+bb2[level]=1};
  parity = 0;
  Ldata = {Ltype, level, charvalues, OMEGA, parity};
  realOrImaginary = 0;
@@ -113,7 +114,7 @@ Print["Size of system: ", nrOfEquations, " x ", nrOfUnknowns];
 			For[k=1, k<=getNrOfParameters[Ltype] + 1, k++,
                 llist = getLlist[Ltype, Rlist[[k]], parity];
                 phaseFactor = getPhaseFactor[Ltype, Rlist[[k]]];
-				result[Rlist[[k]]] = solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary];
+				result[Rlist[[k]]] = solveForOneNL[Ldata, klist, llist, reslist, polelist, phaseFactor, slist, paralist, Param, nrOfRuns, NN, M, incr, v, expz, startValues, knownCoef, maxPower, NLmethod, MaxSolutions, startValuePrec, realOrImaginary, extraEq];
 				If[Length[result[Rlist[[k]]][[1]]]==0,
 					zoomloop=ZoomSteps;
 					success = False;
